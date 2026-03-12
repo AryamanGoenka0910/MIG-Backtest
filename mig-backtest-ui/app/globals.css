@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* ─── Base dark-mode variables ─────────────────────────────────────── */
+:root {
+  --background: #020617;
+  --foreground: #f1f5f9;
+  --card: #0f172a;
+  --card-foreground: #cbd5e1;
+  --border: rgba(30, 41, 59, 0.6);
+  --muted: #1e293b;
+  --muted-foreground: #64748b;
+}
+
+/* ─── Tailwind v4 design tokens ─────────────────────────────────────── */
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent-emerald: #10b981;
+  --color-accent-rose:    #f43f5e;
+  --color-accent-sky:     #38bdf8;
+  --color-accent-gold:    #f59e0b;
+  --color-accent-silver:  #94a3b8;
+  --color-accent-bronze:  #b45309;
+
+  --color-glass:        rgba(15, 23, 42, 0.8);
+  --color-glass-border: rgba(51, 65, 85, 0.4);
+
+  --shadow-glow-emerald: 0 0 24px rgba(16, 185, 129, 0.12);
+  --shadow-glow-sky:     0 0 24px rgba(56, 189, 248, 0.12);
+  --shadow-glow-rose:    0 0 24px rgba(244, 63, 94, 0.12);
+  --shadow-glow-gold:    0 0 24px rgba(245, 158, 11, 0.15);
+}
+
+/* ─── Base styles ───────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+/* ─── Reusable utilities ────────────────────────────────────────────── */
+@layer utilities {
+  .glass-card {
+    background-color: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(51, 65, 85, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .glass-card-hover {
+    background-color: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(51, 65, 85, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+
+  .glass-card-hover:hover {
+    background-color: rgba(30, 41, 59, 0.6);
+    border-color: rgba(71, 85, 105, 0.5);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #10b981 0%, #38bdf8 50%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-grid-pattern {
+    background-image:
+      linear-gradient(rgba(30, 41, 59, 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30, 41, 59, 0.3) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .mono-nums {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ─── Scrollbar styling ─────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ─── Focus styles ──────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
