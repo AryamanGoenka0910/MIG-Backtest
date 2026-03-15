@@ -387,51 +387,6 @@ export const mockSubmissions: Submission[] = [
   },
 ];
 
-export const mockTimeline: TimelineEvent[] = [
-  {
-    id: "tl-1",
-    phase: "Registration Opens",
-    date: "January 15, 2026",
-    description: "Teams register with name, school, and roster. Starter code and market data documentation released.",
-    status: "completed",
-  },
-  {
-    id: "tl-2",
-    phase: "Data Release",
-    date: "February 1, 2026",
-    description: "Full historical feature dataset released. Includes OHLCV data + derived signals for 5 ETFs across 3 years.",
-    status: "completed",
-  },
-  {
-    id: "tl-3",
-    phase: "Submission Window Opens",
-    date: "February 15, 2026",
-    description: "Teams may begin uploading strategy files. Max 5 submissions per day. Leaderboard updates every 2 hours.",
-    status: "completed",
-  },
-  {
-    id: "tl-4",
-    phase: "Submission Deadline",
-    date: "March 20, 2026",
-    description: "Final submission window closes at 11:59 PM EST. No submissions accepted after deadline. Leaderboard frozen.",
-    status: "active",
-  },
-  {
-    id: "tl-5",
-    phase: "Hidden Finals Evaluation",
-    date: "March 21–27, 2026",
-    description: "All eligible strategies are evaluated on a hidden out-of-sample dataset. Results are confidential until announcement.",
-    status: "upcoming",
-  },
-  {
-    id: "tl-6",
-    phase: "Awards Ceremony",
-    date: "April 5, 2026",
-    description: "Top 3 teams announced and recognized at the MIG Spring Symposium. Prize distribution and sponsor presentations.",
-    status: "upcoming",
-  },
-];
-
 export const mockAdminLogs: AdminLog[] = [
   {
     id: "log-001",
@@ -507,11 +462,12 @@ export const mockAdminLogs: AdminLog[] = [
 
 export const mockSponsors: Sponsor[] = [
   { name: "IMC Trading", tier: "gold", logoPlaceholder: "IMC" },
-  { name: "Optiver", tier: "gold", logoPlaceholder: "OPTIVER" },
+  { name: "Optiver", tier: "silver", logoPlaceholder: "OPTIVER" },
   { name: "Jane Street", tier: "silver", logoPlaceholder: "Jane Street" },
   { name: "Citadel", tier: "silver", logoPlaceholder: "CITADEL" },
-  { name: "Two Sigma", tier: "bronze", logoPlaceholder: "Two Sigma" },
-  { name: "DRW", tier: "bronze", logoPlaceholder: "DRW" },
+  { name: "Old Mission", tier: "silver", logoPlaceholder: "Old Mission" },
+  { name: "5 Rings", tier: "bronze", logoPlaceholder: "5 Rings" },
+  { name: "HRT", tier: "bronze", logoPlaceholder: "HRT" },
 ];
 
 export const mockLeaderboardStats: LeaderboardStats = {

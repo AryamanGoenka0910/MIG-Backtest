@@ -3,6 +3,8 @@ export type SubmissionStatus =
   | "running"
   | "passed"
   | "failed"
+  | "failed_runtime"
+  | "timed_out"
   | "disqualified";
 
 export interface Team {

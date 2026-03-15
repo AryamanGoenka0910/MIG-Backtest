@@ -13,10 +13,6 @@ export default function Footer() {
             </div>
             <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
               The University of Michigan Investment Group&apos;s annual algorithmic trading challenge.
-              Open to all university students.
-            </p>
-            <p className="text-slate-600 text-xs">
-              © {new Date().getFullYear()} Michigan Investment Group. All rights reserved.
             </p>
           </div>
 
@@ -48,15 +44,15 @@ export default function Footer() {
             <div className="flex flex-col gap-3 text-sm text-slate-500">
               <div>
                 <span className="text-slate-400 font-medium">Submission Window</span>
-                <p>Feb 15 – Mar 20, 2026</p>
+                <p>March 15 – Mar 20, 2026</p>
               </div>
               <div>
                 <span className="text-slate-400 font-medium">Awards Ceremony</span>
-                <p>April 5, 2026</p>
+                <p>March 20, 2026</p>
               </div>
               <div>
                 <span className="text-slate-400 font-medium">Contact</span>
-                <p>quant@miginvestmentgroup.com</p>
+                <p>mig.quant.board@umich.edu</p>
               </div>
             </div>
           </div>
@@ -64,12 +60,10 @@ export default function Footer() {
 
         <div className="mt-10 pt-6 border-t border-slate-800/50 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-slate-600 text-xs">
-            Built by MIG Tech Division · Powered by Next.js & FastAPI
+            Built by MIG Quant
           </p>
           <div className="flex items-center gap-3 text-xs text-slate-600">
-            <span>Multi-Asset Daily Trading Challenge</span>
-            <span>·</span>
-            <span>Public Leaderboard + Hidden Finals</span>
+            <span>© 2026 Michigan Investement Group. All rights reserved.</span>
           </div>
         </div>
       </div>

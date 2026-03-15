@@ -1,21 +1,20 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
-import Button from "@/components/ui/Button";
+import { useState, useRef } from "react";
 
-type DropzoneState = "idle" | "dragging" | "uploading" | "success" | "error";
+type DropzoneState = "idle" | "dragging" | "ready" | "uploading" | "success" | "error";
 
 interface UploadDropzoneProps {
+  userId: string;
+  teamId: string;
   maxSizeMB?: number;
 }
 
-export default function UploadDropzone({ maxSizeMB = 1 }: UploadDropzoneProps) {
+export default function UploadDropzone({ userId, teamId, maxSizeMB = 1 }: UploadDropzoneProps) {
   const [state, setState] = useState<DropzoneState>("idle");
   const [progress, setProgress] = useState(0);
-  const [fileName, setFileName] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
-  const [name, setName] = useState("");
-  const [school, setSchool] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const validateFile = (file: File): string | null => {
@@ -24,101 +23,84 @@ export default function UploadDropzone({ maxSizeMB = 1 }: UploadDropzoneProps) {
     return null;
   };
 
-  const handleFile = useCallback(
-    (file: File) => {
-      const err = validateFile(file);
-      if (err) {
-        setErrorMsg(err);
-        setState("error");
-        return;
-      }
-      if (!name.trim() || !school.trim()) {
-        setErrorMsg("Please fill in your name and school before uploading.");
-        setState("error");
-        return;
+  const pickFile = (file: File) => {
+    const err = validateFile(file);
+    if (err) {
+      setErrorMsg(err);
+      setState("error");
+      return;
+    }
+    setSelectedFile(file);
+    setState("ready");
+  };
+
+  const submit = async () => {
+    if (!selectedFile) return;
+
+    setState("uploading");
+    setProgress(30);
+
+    const formData = new FormData();
+    formData.append("user_id", userId);
+    formData.append("team_id", teamId);
+    formData.append("file", selectedFile);
+
+    try {
+      setProgress(60);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/submissions/upload`,
+        { method: "POST", body: formData }
+      );
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail ?? `Server error (${res.status})`);
       }
 
-      setFileName(file.name);
-      setState("uploading");
-      setProgress(0);
-
-      // Simulate upload progress
-      let p = 0;
-      const interval = setInterval(() => {
-        p += Math.random() * 20;
-        if (p >= 100) {
-          p = 100;
-          clearInterval(interval);
-          setTimeout(() => {
-            setState("success");
-            setProgress(100);
-          }, 300);
-        }
-        setProgress(Math.min(p, 100));
-      }, 150);
-    },
-    [name, school, maxSizeMB]
-  );
+      setProgress(100);
+      setState("success");
+    } catch (e) {
+      setErrorMsg(e instanceof Error ? e.message : "Upload failed.");
+      setState("error");
+    }
+  };
 
   const onDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    setState("idle");
     const file = e.dataTransfer.files[0];
-    if (file) handleFile(file);
+    if (file) pickFile(file);
+    else setState("idle");
   };
 
   const reset = () => {
     setState("idle");
     setProgress(0);
-    setFileName("");
+    setSelectedFile(null);
     setErrorMsg("");
     if (inputRef.current) inputRef.current.value = "";
   };
 
+  const isDroppable = state === "idle" || state === "dragging";
+
   const zoneClasses: Record<DropzoneState, string> = {
     idle:      "border-slate-700 bg-slate-900/30 hover:border-slate-600 hover:bg-slate-900/50",
     dragging:  "border-sky-500 bg-sky-500/5 scale-[1.01]",
+    ready:     "border-emerald-500/30 bg-emerald-500/5",
     uploading: "border-slate-700 bg-slate-900/30",
     success:   "border-emerald-500/50 bg-emerald-500/5",
     error:     "border-rose-500/50 bg-rose-500/5",
   };
 
   return (
-    <div className="flex flex-col gap-5">
-      {/* Name + school */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs text-slate-400 font-medium mb-1.5">Your Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            placeholder="Full name"
-            disabled={state === "uploading" || state === "success"}
-            className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:border-emerald-500/50 transition-colors disabled:opacity-50"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-slate-400 font-medium mb-1.5">School</label>
-          <input
-            type="text"
-            value={school}
-            onChange={e => setSchool(e.target.value)}
-            placeholder="University name"
-            disabled={state === "uploading" || state === "success"}
-            className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:border-emerald-500/50 transition-colors disabled:opacity-50"
-          />
-        </div>
-      </div>
-
-      {/* Dropzone */}
+    <div className="flex flex-col gap-4">
+      {/* Drop zone */}
       <div
-        onDragEnter={() => state === "idle" && setState("dragging")}
+        onDragEnter={() => isDroppable && setState("dragging")}
         onDragLeave={() => state === "dragging" && setState("idle")}
         onDragOver={e => e.preventDefault()}
         onDrop={onDrop}
-        onClick={() => state === "idle" && inputRef.current?.click()}
-        className={`relative rounded-xl border-2 border-dashed p-8 text-center transition-all duration-200 ${zoneClasses[state]} ${state === "idle" ? "cursor-pointer" : "cursor-default"}`}
+        onClick={() => isDroppable && inputRef.current?.click()}
+        className={`relative rounded-xl border-2 border-dashed p-8 text-center transition-all duration-200 ${zoneClasses[state]} ${isDroppable ? "cursor-pointer" : "cursor-default"}`}
       >
         <input
           ref={inputRef}
@@ -127,7 +109,7 @@ export default function UploadDropzone({ maxSizeMB = 1 }: UploadDropzoneProps) {
           className="hidden"
           onChange={e => {
             const file = e.target.files?.[0];
-            if (file) handleFile(file);
+            if (file) pickFile(file);
           }}
         />
 
@@ -153,8 +135,28 @@ export default function UploadDropzone({ maxSizeMB = 1 }: UploadDropzoneProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
               </svg>
             </div>
-            <p className="text-sky-300 font-medium">Release to upload</p>
+            <p className="text-sky-300 font-medium">Release to select</p>
           </>
+        )}
+
+        {state === "ready" && (
+          <div className="flex flex-col items-center gap-2">
+            <div className="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
+              <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <p className="text-slate-300 font-medium font-mono text-sm">{selectedFile?.name}</p>
+            <p className="text-slate-600 text-xs">
+              {((selectedFile?.size ?? 0) / 1024).toFixed(1)} KB
+            </p>
+            <button
+              onClick={(e) => { e.stopPropagation(); reset(); }}
+              className="text-xs text-slate-600 hover:text-slate-400 underline transition-colors cursor-pointer"
+            >
+              Remove
+            </button>
+          </div>
         )}
 
         {state === "uploading" && (
@@ -167,12 +169,12 @@ export default function UploadDropzone({ maxSizeMB = 1 }: UploadDropzoneProps) {
             </div>
             <div className="w-full max-w-xs">
               <div className="flex justify-between text-xs text-slate-500 mb-1.5">
-                <span className="font-mono truncate max-w-[180px]">{fileName}</span>
+                <span className="font-mono truncate max-w-45">{selectedFile?.name}</span>
                 <span className="font-mono">{Math.round(progress)}%</span>
               </div>
               <div className="w-full h-1.5 rounded-full bg-slate-800">
                 <div
-                  className="h-1.5 rounded-full bg-emerald-500 transition-all duration-150"
+                  className="h-1.5 rounded-full bg-emerald-500 transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -189,7 +191,7 @@ export default function UploadDropzone({ maxSizeMB = 1 }: UploadDropzoneProps) {
               </svg>
             </div>
             <p className="text-emerald-400 font-semibold">Submission received!</p>
-            <p className="text-slate-500 text-sm font-mono">{fileName}</p>
+            <p className="text-slate-500 text-sm font-mono">{selectedFile?.name}</p>
             <p className="text-slate-600 text-xs">Backtesting in progress — results in ~2 min</p>
             <button
               onClick={(e) => { e.stopPropagation(); reset(); }}
@@ -218,6 +220,16 @@ export default function UploadDropzone({ maxSizeMB = 1 }: UploadDropzoneProps) {
           </div>
         )}
       </div>
+
+      {/* Submit button — only shown when a file is ready */}
+      {state === "ready" && (
+        <button
+          onClick={submit}
+          className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400 active:scale-[0.98] transition-all duration-150"
+        >
+          Submit Strategy
+        </button>
+      )}
     </div>
   );
 }

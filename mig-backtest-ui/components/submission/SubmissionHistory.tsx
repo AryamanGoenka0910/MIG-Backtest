@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import type { Submission } from "@/types";
 import StatusBadge from "@/components/ui/StatusBadge";
 
@@ -15,6 +18,8 @@ function formatDate(iso: string): string {
 }
 
 export default function SubmissionHistory({ submissions }: SubmissionHistoryProps) {
+  const router = useRouter();
+
   if (submissions.length === 0) {
     return (
       <div className="text-center py-12">
@@ -37,18 +42,20 @@ export default function SubmissionHistory({ submissions }: SubmissionHistoryProp
             <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
             <th className="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Sharpe</th>
             <th className="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider hidden md:table-cell">PnL</th>
+            <th className="px-4 py-3 w-8" />
           </tr>
         </thead>
         <tbody>
           {submissions.map((sub, i) => (
             <tr
               key={sub.id}
-              className={`border-b border-slate-800/40 transition-colors ${
+              onClick={() => router.push(`/submissions/${sub.id}`)}
+              className={`border-b border-slate-800/40 cursor-pointer transition-colors ${
                 i % 2 === 0 ? "bg-slate-900/20" : "bg-transparent"
-              } hover:bg-slate-800/20`}
+              } hover:bg-slate-800/30`}
             >
               <td className="px-4 py-3.5 mono-nums text-slate-600 text-xs">#{sub.id}</td>
-              <td className="px-4 py-3.5 max-w-[180px]">
+              <td className="px-4 py-3.5 max-w-45">
                 <p className="font-mono text-slate-300 text-xs truncate">{sub.fileName}</p>
                 {sub.errorMessage && (
                   <p className="text-rose-400 text-xs mt-0.5 truncate" title={sub.errorMessage}>
@@ -79,6 +86,11 @@ export default function SubmissionHistory({ submissions }: SubmissionHistoryProp
                 ) : (
                   <span className="text-slate-600">—</span>
                 )}
+              </td>
+              <td className="px-4 py-3.5 text-slate-600">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </td>
             </tr>
           ))}

@@ -33,6 +33,18 @@ const config: Record<
     dotClass: "bg-rose-400",
     pulse: false,
   },
+  failed_runtime: {
+    label: "Runtime Error",
+    classes: "bg-rose-500/10 text-rose-400 border-rose-500/20",
+    dotClass: "bg-rose-400",
+    pulse: false,
+  },
+  timed_out: {
+    label: "Timed Out",
+    classes: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+    dotClass: "bg-amber-400",
+    pulse: false,
+  },
   disqualified: {
     label: "Disqualified",
     classes: "bg-amber-500/10 text-amber-400 border-amber-500/20",

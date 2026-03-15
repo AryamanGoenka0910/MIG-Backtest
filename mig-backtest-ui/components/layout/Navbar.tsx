@@ -2,23 +2,32 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/leaderboard", label: "Leaderboard" },
-  { href: "/submit", label: "Submit" },
-  { href: "/rules", label: "Rules" },
-  { href: "/team", label: "My Team" },
-  { href: "/admin", label: "Admin" },
+  // { href: "/leaderboard", label: "Leaderboard" },
+  // { href: "/submit", label: "Submit" },
+  { href: "/docs", label: "Docs" },
+  // { href: "/team", label: "My Team" },
+  // { href: "/admin", label: "Admin" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+  async function handleSignOut() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  }
 
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/90 backdrop-blur-md">
@@ -27,7 +36,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <span className="font-mono font-bold text-xl text-emerald-400 tracking-tight">MIG</span>
-            <span className="font-semibold text-slate-100 text-sm hidden sm:block">Quant Competition</span>
+            <span className="font-semibold text-slate-100 text-sm hidden sm:block">Quant Conference</span>
             <span className="hidden sm:block ml-1 text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">
               2026
             </span>
@@ -50,14 +59,20 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA + mobile toggle */}
+          {/* CTA + sign out + mobile toggle */}
           <div className="flex items-center gap-3">
-            <Link
+            {/* <Link
               href="/submit"
               className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 transition-colors duration-150"
             >
               Submit Strategy
-            </Link>
+            </Link> */}
+            <button
+              onClick={handleSignOut}
+              className="hidden sm:inline-flex px-3 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-colors duration-150"
+            >
+              Sign out
+            </button>
             <button
               className="md:hidden p-2 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -95,13 +110,19 @@ export default function Navbar() {
                 {label}
               </Link>
             ))}
-            <Link
+            {/* <Link
               href="/submit"
               onClick={() => setMobileOpen(false)}
               className="mt-2 px-3 py-2 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold text-center hover:bg-emerald-400 transition-colors"
             >
               Submit Strategy
-            </Link>
+            </Link> */}
+            <button
+              onClick={() => { setMobileOpen(false); handleSignOut(); }}
+              className="px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 text-left transition-colors"
+            >
+              Sign out
+            </button>
           </div>
         </div>
       )}

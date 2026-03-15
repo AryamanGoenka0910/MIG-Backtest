@@ -73,7 +73,6 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
     { key: "pnl", label: "PnL" },
     { key: "sharpe", label: "Sharpe" },
     { key: "maxDrawdown", label: "Max DD" },
-    { key: "submissionsCount", label: "Subs" },
   ];
 
   return (
@@ -122,8 +121,6 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
                   </button>
                 </th>
               ))}
-              <th className="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider hidden md:table-cell">Trend</th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -178,23 +175,6 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
                     <span className="mono-nums text-rose-400">
                       {(team.maxDrawdown * 100).toFixed(1)}%
                     </span>
-                  </td>
-
-                  {/* Subs */}
-                  <td className="px-4 py-3.5 text-right mono-nums text-slate-500">
-                    {team.submissionsCount}
-                  </td>
-
-                  {/* Sparkline */}
-                  <td className="px-4 py-3.5 hidden md:table-cell">
-                    <div className="flex justify-end">
-                      <SparklineChart data={team.sparklineData} width={72} height={28} color="auto" />
-                    </div>
-                  </td>
-
-                  {/* Status */}
-                  <td className="px-4 py-3.5 text-center">
-                    <StatusBadge status={team.status} />
                   </td>
                 </tr>
               ))

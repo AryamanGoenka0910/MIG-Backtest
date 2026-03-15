@@ -60,7 +60,7 @@ export default function SponsorStrip({ sponsors }: SponsorStripProps) {
           </div>
 
           <p className="text-slate-700 text-xs mt-2">
-            Interested in sponsoring? Contact quant@miginvestmentgroup.com
+            Interested in sponsoring? Contact mig.quant.board@umich.edu
           </p>
         </div>
       </div>
