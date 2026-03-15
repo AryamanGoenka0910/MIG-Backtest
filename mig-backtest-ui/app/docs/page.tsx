@@ -157,7 +157,9 @@ export default function DocsPage() {
                 function called <code className="text-emerald-400 font-mono text-sm">get_actions</code>. The backtester feeds your function
                 historical Open prices for all stocks and expects back a matrix of share quantities to trade each day.
                 Strategies are ranked by <span className="text-slate-200 font-medium">Final PnL</span>, with Sharpe Ratio and Max
-                Drawdown as tiebreakers.
+                Drawdown as tiebreakers.{" "}
+                <span className="text-emerald-400 font-medium">Machine learning and technical indicators are fully encouraged</span> — the
+                sandbox ships with scikit-learn, statsmodels, and ta-lib out of the box.
               </p>
               <div className="grid sm:grid-cols-3 gap-4">
                 {[
@@ -287,14 +289,26 @@ export default function DocsPage() {
 
               <CodeBlock code={STRATEGY_CODE} lang="python — sample_strategy.py" />
 
-              <div className="mt-5 rounded-xl bg-amber-500/5 border border-amber-500/20 p-4">
-                <p className="text-amber-400 text-xs font-mono uppercase tracking-widest mb-1">Important</p>
+              <div className="mt-5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 p-4 mb-4">
+                <p className="text-emerald-400 text-xs font-mono uppercase tracking-widest mb-1">ML &amp; Technical Indicators Encouraged</p>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  You are free to use machine learning models, statistical methods, and technical indicators inside{" "}
+                  <code className="font-mono text-slate-300">get_actions</code>.{" "}
+                  <code className="font-mono text-slate-300">scikit-learn</code>,{" "}
+                  <code className="font-mono text-slate-300">statsmodels</code>, and{" "}
+                  <code className="font-mono text-slate-300">ta-lib</code> (RSI, MACD, Bollinger Bands, etc.) are all pre-installed.
+                  You can also bundle pre-trained model weights (e.g. a <code className="font-mono text-slate-300">.pkl</code> file) inside a{" "}
+                  <code className="font-mono text-slate-300">.zip</code> submission and load them at runtime.
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-4">
+                <p className="text-amber-400 text-xs font-mono uppercase tracking-widest mb-1">Requirements</p>
                 <ul className="text-slate-400 text-sm leading-relaxed space-y-1 list-disc list-inside">
                   <li>The function name must be exactly <code className="font-mono text-slate-300">get_actions</code> — no aliases.</li>
                   <li>You may import any package listed in the Available Packages section.</li>
                   <li>No network access is permitted inside the sandbox.</li>
-                  <li>No file I/O — reading or writing files will raise a permission error.</li>
-                  <li>No randomness — your strategy must be deterministic (same input → same output).</li>
+                  <li>No file I/O at arbitrary paths — access only files bundled in your <code className="font-mono text-slate-300">.zip</code>.</li>
                 </ul>
               </div>
             </div>
@@ -408,8 +422,17 @@ export default function DocsPage() {
                   </div>
                 ))}
               </div>
+              <div className="mt-5 rounded-xl bg-violet-500/5 border border-violet-500/20 p-4">
+                <p className="text-violet-400 text-xs font-mono uppercase tracking-widest mb-1">Technical Indicators — ta-lib</p>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  <code className="font-mono text-slate-300">ta-lib</code> gives you over 150 technical indicators with a single import:{" "}
+                  RSI, MACD, Bollinger Bands, ATR, Stochastic, ADX, and more. These are computed directly on the{" "}
+                  <code className="font-mono text-slate-300">prices</code> array your strategy receives —{" "}
+                  no extra data needed. This is the recommended starting point for signal engineering.
+                </p>
+              </div>
               <p className="text-slate-600 text-xs mt-4">
-                Need a package not in this list? Text an admin on the discord for more help
+                Need a package not in this list? Message an admin on Discord.
               </p>
             </div>
           </Section>

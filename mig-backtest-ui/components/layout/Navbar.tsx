@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -18,6 +18,16 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => setIsSignedIn(!!data.user));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsSignedIn(!!session?.user);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -67,12 +77,21 @@ export default function Navbar() {
             >
               Submit Strategy
             </Link> */}
-            <button
-              onClick={handleSignOut}
-              className="hidden sm:inline-flex px-3 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-colors duration-150"
-            >
-              Sign out
-            </button>
+            {isSignedIn ? (
+              <button
+                onClick={handleSignOut}
+                className="hidden sm:inline-flex px-3 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-colors duration-150"
+              >
+                Sign out
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                className="hidden sm:inline-flex px-3 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-colors duration-150"
+              >
+                Sign in
+              </Link>
+            )}
             <button
               className="md:hidden p-2 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -117,12 +136,22 @@ export default function Navbar() {
             >
               Submit Strategy
             </Link> */}
-            <button
-              onClick={() => { setMobileOpen(false); handleSignOut(); }}
-              className="px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 text-left transition-colors"
-            >
-              Sign out
-            </button>
+            {isSignedIn ? (
+              <button
+                onClick={() => { setMobileOpen(false); handleSignOut(); }}
+                className="px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 text-left transition-colors"
+              >
+                Sign out
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileOpen(false)}
+                className="px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
+              >
+                Sign in
+              </Link>
+            )}
           </div>
         </div>
       )}
