@@ -23,7 +23,7 @@ export default function LoginPage() {
       setError(error.message);
       setLoading(false);
     } else {
-      router.push("/submit");
+      router.push("/docs");
       router.refresh();
     }
   }
@@ -39,7 +39,7 @@ export default function LoginPage() {
 
         <div className="glass-card rounded-2xl p-8">
           <h1 className="text-slate-100 font-semibold text-xl mb-1">Sign in</h1>
-          <p className="text-slate-500 text-sm mb-6">Use your competition account credentials.</p>
+          <p className="text-slate-500 text-sm mb-6">Use your migconf.com account credentials.</p>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
