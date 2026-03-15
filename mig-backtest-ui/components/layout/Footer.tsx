@@ -22,10 +22,10 @@ export default function Footer() {
             <nav className="flex flex-col gap-2">
               {[
                 { href: "/", label: "Home" },
-                { href: "/leaderboard", label: "Leaderboard" },
-                { href: "/submit", label: "Submit Strategy" },
-                { href: "/rules", label: "Competition Rules" },
-                { href: "/team", label: "My Dashboard" },
+                // { href: "/leaderboard", label: "Leaderboard" },
+                // { href: "/submit", label: "Submit Strategy" },
+                { href: "/docs", label: "Competition Docs" },
+                // { href: "/team", label: "My Dashboard" },
               ].map(({ href, label }) => (
                 <Link
                   key={href}
