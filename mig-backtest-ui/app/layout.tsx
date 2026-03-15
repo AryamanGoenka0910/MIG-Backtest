@@ -31,10 +31,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-950 text-slate-100 min-h-screen flex flex-col`}
       >
-        <MarketUpdateBanner
+        {/* <MarketUpdateBanner
           message="Submission deadline: March 20, 2026 at 11:59 PM EST — 8 days remaining"
           dismissKey="banner-march-2026-deadline"
-        />
+        /> */}
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
