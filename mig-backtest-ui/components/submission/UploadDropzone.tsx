@@ -20,8 +20,11 @@ export default function UploadDropzone({ userId, teamId, maxSizeMB = 1 }: Upload
   const inputRef = useRef<HTMLInputElement>(null);
 
   const validateFile = (file: File): string | null => {
-    if (!file.name.endsWith(".py")) return "Only .py Python files are accepted.";
-    if (file.size > maxSizeMB * 1024 * 1024) return `File must be under ${maxSizeMB}MB.`;
+    const isPy = file.name.endsWith(".py");
+    const isZip = file.name.endsWith(".zip");
+    if (!isPy && !isZip) return "Only .py or .zip files are accepted.";
+    const limitMB = isZip ? 10 : maxSizeMB;
+    if (file.size > limitMB * 1024 * 1024) return `File must be under ${limitMB}MB.`;
     return null;
   };
 
@@ -108,7 +111,7 @@ export default function UploadDropzone({ userId, teamId, maxSizeMB = 1 }: Upload
         <input
           ref={inputRef}
           type="file"
-          accept=".py"
+          accept=".py,.zip"
           className="hidden"
           onChange={e => {
             const file = e.target.files?.[0];
@@ -126,7 +129,7 @@ export default function UploadDropzone({ userId, teamId, maxSizeMB = 1 }: Upload
             <p className="text-slate-300 font-medium mb-1">Drop your strategy file here</p>
             <p className="text-slate-600 text-sm mb-3">or click to browse</p>
             <span className="text-xs px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-500 font-mono">
-              .py only · max {maxSizeMB}MB
+              .py (max {maxSizeMB}MB) · .zip (max 10MB)
             </span>
           </>
         )}
