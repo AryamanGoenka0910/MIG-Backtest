@@ -1,0 +1,9 @@
+=== STDERR ===
+ERROR installing requirements:
+WARNING: The directory '/home/sandbox/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.
+ERROR: Could not install packages due to an OSError: [Errno 13] Permission denied: '/home/sandbox'
+Check the permissions.
+
+
+[notice] A new release of pip is available: 24.0 -> 26.0.1
+[notice] To update, run: pip install --upgrade pip

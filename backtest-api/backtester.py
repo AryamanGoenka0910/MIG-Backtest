@@ -6,7 +6,11 @@ import argparse
 
 class Backtester:
     def __init__(self, prices, actions, cash=25000):
-        assert prices.shape == actions.shape, "prices and actions must be the same shape"
+        if prices.shape != actions.shape:
+            raise ValueError(f"actions shape {actions.shape} does not match prices shape {prices.shape}")
+
+        # no fractional shares
+        actions = np.round(actions).astype(int)
 
         ##METADATA
         self.stocks = len(prices)
@@ -24,14 +28,29 @@ class Backtester:
         # ticker -> dequeue(short price, short amount)
         self.short_positions = defaultdict(deque)
 
+    def calc_pnl(self) -> float:
+        return float(self.port_values[-1]) - self.initial_cash
+
+    def calc_max_drawdown(self) -> float:
+        """Returns the maximum drawdown as a negative decimal (e.g. -0.054)."""
+        arr = np.array(self.port_values, dtype=float)
+        peak = np.maximum.accumulate(arr)
+        with np.errstate(invalid="ignore", divide="ignore"):
+            drawdowns = np.where(peak > 0, (arr - peak) / peak, 0.0)
+        return float(np.min(drawdowns))
+
     # returns annualized sharpe ratio
     def calc_sharpe_ratio(self):
-        daily_returns = np.diff(self.port_values) / self.port_values[:-1]
-        
+        port_values = np.array(self.port_values, dtype=float)
+        # use initial cash as day-0 baseline to avoid dividing by 0
+        prev_values = np.concatenate([[self.initial_cash], port_values[:-1]])
+        daily_returns = np.diff(port_values) / prev_values[1:]
+        daily_returns = daily_returns[np.isfinite(daily_returns)]
+
         if len(daily_returns) < 2:
             return 0.0
         volatility = np.std(daily_returns, ddof=1)
-        
+
         if volatility == 0 or np.isnan(volatility):
             return 0.0
         return np.sqrt(252) * np.mean(daily_returns) / volatility
@@ -84,8 +103,9 @@ class Backtester:
                 self.short_positions[stock][0][1] -= positions_to_close
 
         if short_close_amount > 0:
-            self.cash -= self.prices[stock][day] * short_close_amount
-            self.positions[stock] += short_close_amount
+            if self.cash >= self.prices[stock][day] * short_close_amount:
+                self.cash -= self.prices[stock][day] * short_close_amount
+                self.positions[stock] += short_close_amount
 
     def sellLong(self, day, stock):
         # sell existing long shares, then open a short with any remainder
@@ -106,12 +126,18 @@ class Backtester:
         self.positions[stock] -= short_amount
 
     def eval_actions(self, verbose=True):
+        try:
+            return self._eval_actions(verbose)
+        except Exception as e:
+            print(f"BACKTEST FAILED: unexpected error — {e}")
+            return None, None, None, None
+
+    def _eval_actions(self, verbose=True):
         # --- main logic ---
         for day in range(self.days):
-            if self.port_values[day] < 0:
-                print("DEBT LIMIT HIT (likely too many short positions)")
-                print("occurred on day: ", day, " last port value: ", self.port_values[day])
-                return 0, 0
+            if day > 0 and self.port_values[day - 1] < 0:
+                print(f"BACKTEST FAILED: portfolio went negative on day {day - 1} (value: {self.port_values[day - 1]:.2f}). Too many short positions.")
+                return None, None, None, None
 
             for stock in range(self.stocks):
                 # case 1: we have a positive position and are buying or don't have a position yet
@@ -139,7 +165,7 @@ class Backtester:
             print("short position info:", self.short_positions)
             print("short value:", self.calcShortValue(len(self.actions[0]) - 1))
 
-        return self.port_values, self.calc_sharpe_ratio()
+        return self.port_values, self.calc_pnl(), self.calc_sharpe_ratio(), self.calc_max_drawdown()
     
 
 if __name__ == "__main__":

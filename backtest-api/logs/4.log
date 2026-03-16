@@ -1,0 +1,2 @@
+=== STDERR ===
+ERROR importing strategy: No module named 'talib'

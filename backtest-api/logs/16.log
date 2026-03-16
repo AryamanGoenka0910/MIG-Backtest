@@ -1,0 +1,5 @@
+=== STDERR ===
+/app/runner.py:35: UserWarning: Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.
+  df["Date"] = pd.to_datetime(df["Date"])
+ERROR loading market data: "None of ['Ticker'] are in the columns"
+
