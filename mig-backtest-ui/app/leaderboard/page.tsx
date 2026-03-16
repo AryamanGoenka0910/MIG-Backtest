@@ -84,20 +84,12 @@ export default async function LeaderboardPage() {
           </div>
           {teams.length > 0 && (
             <p className="text-slate-500 text-sm">
-              <span className="text-slate-300 font-medium mono-nums">10</span> teams scored
+              <span className="text-slate-300 font-medium mono-nums">{teams.length}</span> teams scored
             </p>
           )}
         </div>
       </div>
-          
-        <div className="text-center py-24">
-        <div className="w-16 h-16 mx-auto rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center text-2xl mb-4">
-        📊
-        </div>
-        <h3 className="text-slate-300 font-semibold text-lg mb-2">No results yet</h3>
-        <p className="text-slate-500">Leaderboard will populate once submissions are scored.</p>
-    </div>
-      {/* {teams.length === 0 ? (
+      {teams.length === 0 ? (
         <div className="text-center py-24">
           <div className="w-16 h-16 mx-auto rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center text-2xl mb-4">
             📊
@@ -107,7 +99,7 @@ export default async function LeaderboardPage() {
         </div>
       ) : (
         <LeaderboardView teams={teams} />
-      )} */}
+      )}
     </div>
   );
 }

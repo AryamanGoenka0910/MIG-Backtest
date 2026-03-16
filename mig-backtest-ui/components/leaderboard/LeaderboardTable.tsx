@@ -30,12 +30,6 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>("rank");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [search, setSearch] = useState("");
-  const [schoolFilter, setSchoolFilter] = useState("all");
-
-  const schools = useMemo(() => {
-    const set = new Set(teams.map(t => t.school));
-    return ["all", ...Array.from(set).sort()];
-  }, [teams]);
 
   const handleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -50,8 +44,7 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
     let filtered = teams.filter(t => {
       const q = search.toLowerCase();
       const matchSearch = !q || t.name.toLowerCase().includes(q) || t.school.toLowerCase().includes(q);
-      const matchSchool = schoolFilter === "all" || t.school === schoolFilter;
-      return matchSearch && matchSchool;
+      return matchSearch;
     });
 
     filtered.sort((a, b) => {
@@ -66,7 +59,7 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
     });
 
     return filtered;
-  }, [teams, search, schoolFilter, sortKey, sortDir]);
+  }, [teams, search, sortKey, sortDir]);
 
   const cols: { key: SortKey; label: string }[] = [
     { key: "pnl", label: "PnL" },
@@ -84,21 +77,12 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
           </svg>
           <input
             type="text"
-            placeholder="Search team or school..."
+            placeholder="Search team..."
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="w-full pl-9 pr-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:border-emerald-500/50 transition-colors"
           />
         </div>
-        <select
-          value={schoolFilter}
-          onChange={e => setSchoolFilter(e.target.value)}
-          className="px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 text-sm focus:outline-none focus:border-emerald-500/50 cursor-pointer"
-        >
-          {schools.map(s => (
-            <option key={s} value={s}>{s === "all" ? "All Schools" : s}</option>
-          ))}
-        </select>
       </div>
 
       {/* Table */}
@@ -112,7 +96,6 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
                 </button>
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Team</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider hidden lg:table-cell">School</th>
               {cols.map(col => (
                 <th key={col.key} className="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
                   <button onClick={() => handleSort(col.key)} className="flex items-center justify-end ml-auto cursor-pointer hover:text-slate-300 transition-colors">
@@ -151,9 +134,6 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
                     <div className="font-semibold text-slate-200">{team.name}</div>
                     <div className="text-slate-600 text-xs lg:hidden">{team.school}</div>
                   </td>
-
-                  {/* School */}
-                  <td className="px-4 py-3.5 text-slate-500 text-sm hidden lg:table-cell">{team.school}</td>
 
                   {/* PnL */}
                   <td className="px-4 py-3.5 text-right">

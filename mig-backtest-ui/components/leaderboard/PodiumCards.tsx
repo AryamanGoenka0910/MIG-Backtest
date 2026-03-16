@@ -64,8 +64,7 @@ export default function PodiumCards({ teams }: PodiumCardsProps) {
 
             {/* Team info */}
             <div>
-              <h3 className="text-slate-100 font-bold text-lg leading-tight">{team.name}</h3>
-              <p className="text-slate-500 text-sm mt-0.5">{team.school}</p>
+              <h3 className="text-slate-100 font-bold text-lg leading-tight">Team: {team.name}</h3>
             </div>
 
             {/* Sparkline + PnL */}
