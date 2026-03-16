@@ -7,11 +7,10 @@ import { createClient } from "@/lib/supabase/client";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  // { href: "/leaderboard", label: "Leaderboard" },
-  // { href: "/submit", label: "Submit" },
   { href: "/docs", label: "Docs" },
-  // { href: "/team", label: "My Team" },
-  // { href: "/admin", label: "Admin" },
+  { href: "/leaderboard", label: "Leaderboard" },
+  { href: "/submit", label: "Submit" },
+  { href: "/team", label: "My Team" },
 ];
 
 export default function Navbar() {
@@ -71,12 +70,12 @@ export default function Navbar() {
 
           {/* CTA + sign out + mobile toggle */}
           <div className="flex items-center gap-3">
-            {/* <Link
+            <Link
               href="/submit"
               className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 transition-colors duration-150"
             >
               Submit Strategy
-            </Link> */}
+            </Link>
             {isSignedIn ? (
               <button
                 onClick={handleSignOut}
@@ -129,13 +128,13 @@ export default function Navbar() {
                 {label}
               </Link>
             ))}
-            {/* <Link
+            <Link
               href="/submit"
               onClick={() => setMobileOpen(false)}
               className="mt-2 px-3 py-2 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold text-center hover:bg-emerald-400 transition-colors"
             >
               Submit Strategy
-            </Link> */}
+            </Link>
             {isSignedIn ? (
               <button
                 onClick={() => { setMobileOpen(false); handleSignOut(); }}

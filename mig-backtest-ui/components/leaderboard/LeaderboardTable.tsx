@@ -3,7 +3,6 @@
 import { useState, useMemo } from "react";
 import type { Team } from "@/types";
 import StatusBadge from "@/components/ui/StatusBadge";
-import SparklineChart from "@/components/charts/SparklineChart";
 
 type SortKey = "rank" | "pnl" | "sharpe" | "maxDrawdown" | "submissionsCount";
 type SortDir = "asc" | "desc";

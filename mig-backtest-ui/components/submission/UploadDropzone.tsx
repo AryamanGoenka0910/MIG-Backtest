@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 type DropzoneState = "idle" | "dragging" | "ready" | "uploading" | "success" | "error";
 
@@ -11,6 +12,7 @@ interface UploadDropzoneProps {
 }
 
 export default function UploadDropzone({ userId, teamId, maxSizeMB = 1 }: UploadDropzoneProps) {
+  const router = useRouter();
   const [state, setState] = useState<DropzoneState>("idle");
   const [progress, setProgress] = useState(0);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -59,6 +61,7 @@ export default function UploadDropzone({ userId, teamId, maxSizeMB = 1 }: Upload
 
       setProgress(100);
       setState("success");
+      router.refresh();
     } catch (e) {
       setErrorMsg(e instanceof Error ? e.message : "Upload failed.");
       setState("error");

@@ -1,7 +1,17 @@
 import Link from "next/link";
 import HowItWorks from "@/components/landing/HowItWorks";
 import SponsorStrip from "@/components/landing/SponsorStrip";
-import { mockSponsors } from "@/lib/mockData";
+import type { Sponsor } from "@/types";
+
+const sponsors: Sponsor[] = [
+  { name: "IMC Trading",  tier: "gold",     logoPlaceholder: "IMC Trading" },
+  { name: "Jane Street",  tier: "silver",   logoPlaceholder: "Jane Street" },
+  { name: "Citadel",      tier: "silver",   logoPlaceholder: "Citadel" },
+  { name: "Old Mission",  tier: "silver",   logoPlaceholder: "Old Mission" },
+  { name: "Optiver",      tier: "silver",   logoPlaceholder: "Optiver" },
+  { name: "5 Rings",      tier: "bronze",   logoPlaceholder: "5 Rings" },
+  { name: "HRT",          tier: "bronze",   logoPlaceholder: "HRT" },
+];
 
 export default function HomePage() {
 
@@ -39,7 +49,7 @@ export default function HomePage() {
           </p>
 
           {/* CTAs */}
-          {/* <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/submit"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-base hover:bg-emerald-400 transition-colors duration-150 shadow-[0_0_24px_rgba(16,185,129,0.3)]"
@@ -49,7 +59,7 @@ export default function HomePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </Link>
-            <Link
+            {/* <Link
               href="/leaderboard"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl border border-slate-700 text-slate-300 font-semibold text-base hover:border-slate-600 hover:bg-slate-800/40 transition-colors duration-150"
             >
@@ -57,8 +67,8 @@ export default function HomePage() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
-            </Link>
-          </div> */}
+            </Link> */}
+          </div>
 
           {/* Scroll hint */}
           <div className="mt-16 flex justify-center">
@@ -132,7 +142,7 @@ export default function HomePage() {
       </section>
 
       {/* Sponsors */}
-      <SponsorStrip sponsors={mockSponsors} />
+      <SponsorStrip sponsors={sponsors} />
     </div>
   );
 }

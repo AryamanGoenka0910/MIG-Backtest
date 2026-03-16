@@ -158,14 +158,13 @@ export default function DocsPage() {
                 historical Open prices for all stocks and expects back a matrix of share quantities to trade each day.
                 Strategies are ranked by <span className="text-slate-200 font-medium">Final PnL</span>, with Sharpe Ratio and Max
                 Drawdown as tiebreakers.{" "}
-                <span className="text-emerald-400 font-medium">Machine learning and technical indicators are fully encouraged</span> — the
-                sandbox ships with scikit-learn, statsmodels, and ta-lib out of the box.
+                <span className="text-emerald-400 font-medium">Machine learning and technical indicators are fully encouraged</span>
               </p>
               <div className="grid sm:grid-cols-3 gap-4">
                 {[
                   { label: "Starting Capital", value: "$25,000", color: "text-emerald-400" },
                   { label: "Stocks in Universe", value: "30", color: "text-sky-400" },
-                  { label: "Daily Limit", value: "2 Submissions", color: "text-amber-400" },
+                  { label: "Daily Limit", value: "5 Submissions", color: "text-amber-400" },
                 ].map(({ label, value, color }, i) => (
                   <div key={i} className="bg-slate-900/60 rounded-xl p-4 text-center">
                     <p className={`mono-nums text-2xl font-bold ${color}`}>{value}</p>
@@ -235,7 +234,7 @@ export default function DocsPage() {
                         <Link href="/submit" className="text-emerald-400 hover:text-emerald-300 transition-colors">
                           Submit
                         </Link>{" "}
-                        page. You can submit up to 2 times per day. Only your highest-scoring submission counts.
+                        page. You can submit up to 5 times per day. Only your highest-scoring submission counts.
                       </>
                     ),
                   },
@@ -355,8 +354,7 @@ export default function DocsPage() {
                 <p className="text-sky-400 text-xs font-mono uppercase tracking-widest mb-2">Data Shape in Your Strategy</p>
                 <p className="text-slate-400 text-sm leading-relaxed">
                   <code className="font-mono text-slate-300">prices.shape == (30, num_days)</code> — 30 rows (one per stock, alphabetical),
-                  columns are trading days in chronological order. The backtest window is <span className="text-slate-200">251 trading days</span>;
-                  the full training set is longer and available for local research.
+                  columns are trading days in chronological order
                 </p>
               </div>
             </div>
@@ -566,7 +564,7 @@ export default function DocsPage() {
                   { constraint: "Memory Limit", value: "512 MB", note: "Peak RSS during strategy execution" },
                   { constraint: "File Size (.py)", value: "1 MB", note: "Uncompressed single-file submissions" },
                   { constraint: "File Size (.zip)", value: "10 MB", note: "Includes strategy + extra packages" },
-                  { constraint: "Daily Submissions", value: "2 per team", note: "Resets at midnight EST" },
+                  { constraint: "Daily Submissions", value: "5 per team", note: "Resets at midnight EST" },
                   { constraint: "Fractional Shares", value: "Not supported", note: "Actions are rounded to nearest integer" },
                   { constraint: "Network Access", value: "Disabled", note: "No outbound connections from sandbox" },
                   { constraint: "File I/O", value: "Disabled", note: "Read/write access is blocked in sandbox" },

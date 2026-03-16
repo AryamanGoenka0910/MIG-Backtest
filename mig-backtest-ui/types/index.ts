@@ -24,8 +24,6 @@ export interface Team {
 export interface Submission {
   id: number;
   teamId: string;
-  teamName: string;
-  school: string;
   fileName: string;
   timestamp: string;
   status: SubmissionStatus;
