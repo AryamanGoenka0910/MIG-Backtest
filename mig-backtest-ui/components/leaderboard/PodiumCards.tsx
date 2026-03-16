@@ -1,5 +1,4 @@
 import type { Team } from "@/types";
-import SparklineChart from "@/components/charts/SparklineChart";
 
 interface PodiumCardsProps {
   teams: Team[];
@@ -77,7 +76,6 @@ export default function PodiumCards({ teams }: PodiumCardsProps) {
                 </p>
                 <p className="text-slate-600 text-xs mt-0.5">Final PnL</p>
               </div>
-              <SparklineChart data={team.sparklineData} width={80} height={36} color="auto" />
             </div>
 
             {/* Secondary metrics */}
