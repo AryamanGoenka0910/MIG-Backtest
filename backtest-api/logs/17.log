@@ -1,7 +1,0 @@
-=== STDOUT ===
-{"pnl": -39.23, "sharpe": -0.069304, "max_drawdown": -0.018252}
-
-=== STDERR ===
-/app/runner.py:35: UserWarning: Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.
-  df["Date"] = pd.to_datetime(df["Date"])
-
