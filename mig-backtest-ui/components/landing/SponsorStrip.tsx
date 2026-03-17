@@ -6,8 +6,8 @@ interface SponsorStripProps {
 
 const tierConfig = {
   gold:   { label: "Gold", classes: "border-amber-500/30 text-amber-300 bg-amber-500/5 text-base px-8 py-4" },
-  silver: { label: "Silver", classes: "border-slate-600/40 text-slate-300 bg-slate-800/30 text-sm px-6 py-3" },
-  bronze: { label: "Bronze", classes: "border-slate-700/30 text-slate-500 bg-slate-900/30 text-xs px-5 py-3" },
+  silver: { label: "Silver", classes: "border-slate-300 dark:border-slate-600/40 text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/30 text-sm px-6 py-3" },
+  bronze: { label: "Bronze", classes: "border-slate-200 dark:border-slate-700/30 text-slate-500 bg-slate-50 dark:bg-slate-900/30 text-xs px-5 py-3" },
 };
 
 export default function SponsorStrip({ sponsors }: SponsorStripProps) {
@@ -16,9 +16,9 @@ export default function SponsorStrip({ sponsors }: SponsorStripProps) {
   const bronze = sponsors.filter(s => s.tier === "bronze");
 
   return (
-    <section className="py-16 border-t border-slate-800/50">
+    <section className="py-16 border-t border-slate-200/50 dark:border-slate-800/50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <p className="text-center text-slate-600 text-xs font-mono uppercase tracking-widest mb-8">
+        <p className="text-center text-slate-400 dark:text-slate-600 text-xs font-mono uppercase tracking-widest mb-8">
           Presented By
         </p>
 
@@ -59,7 +59,7 @@ export default function SponsorStrip({ sponsors }: SponsorStripProps) {
             ))}
           </div>
 
-          <p className="text-slate-700 text-xs mt-2">
+          <p className="text-slate-400 dark:text-slate-700 text-xs mt-2">
             Interested in sponsoring? Contact mig.quant.board@umich.edu
           </p>
         </div>

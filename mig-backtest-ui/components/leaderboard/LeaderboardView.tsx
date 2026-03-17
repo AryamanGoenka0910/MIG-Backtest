@@ -14,7 +14,7 @@ export default function LeaderboardView({ teams }: LeaderboardViewProps) {
     <>
       {/* Podium */}
       <div className="mb-10">
-        <h2 className="text-sm font-mono uppercase tracking-widest text-slate-500 mb-5">Top 3</h2>
+        <h2 className="text-sm font-mono uppercase tracking-widest text-slate-500 dark:text-slate-500 mb-5">Top 3</h2>
         <PodiumCards teams={teams} />
       </div>
 
@@ -36,13 +36,13 @@ export default function LeaderboardView({ teams }: LeaderboardViewProps) {
             <LeaderboardTable teams={teams} />
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center text-2xl mb-4">
+              <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-2xl mb-4">
                 🔒
               </div>
-              <h3 className="text-slate-300 font-semibold text-lg mb-2">Final Results Locked</h3>
+              <h3 className="text-slate-700 dark:text-slate-300 font-semibold text-lg mb-2">Final Results Locked</h3>
               <p className="text-slate-500 max-w-sm">
                 Final rankings will be revealed on{" "}
-                <span className="text-slate-300 font-medium">March 28, 2026</span> after evaluation
+                <span className="text-slate-700 dark:text-slate-300 font-medium">March 28, 2026</span> after evaluation
                 on the hidden out-of-sample dataset.
               </p>
             </div>

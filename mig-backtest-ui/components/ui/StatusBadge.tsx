@@ -11,8 +11,8 @@ const config: Record<
 > = {
   queued: {
     label: "Queued",
-    classes: "bg-slate-800 text-slate-400 border-slate-700",
-    dotClass: "bg-slate-500",
+    classes: "bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-300 dark:border-slate-700",
+    dotClass: "bg-slate-400 dark:bg-slate-500",
     pulse: false,
   },
   running: {

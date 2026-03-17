@@ -18,13 +18,13 @@ const podiumConfig = [
     labelColor: "text-amber-400",
   },
   {
-    border: "border-slate-600/40",
+    border: "border-slate-300 dark:border-slate-600/40",
     shadow: "",
-    rankBg: "bg-slate-800",
-    rankText: "text-slate-300",
+    rankBg: "bg-slate-200 dark:bg-slate-800",
+    rankText: "text-slate-600 dark:text-slate-300",
     height: "lg:translate-y-4",
     order: "order-2 lg:order-1",
-    labelColor: "text-slate-400",
+    labelColor: "text-slate-500 dark:text-slate-400",
   },
   {
     border: "border-amber-700/30",
@@ -64,28 +64,28 @@ export default function PodiumCards({ teams }: PodiumCardsProps) {
 
             {/* Team info */}
             <div>
-              <h3 className="text-slate-100 font-bold text-lg leading-tight">Team: {team.name}</h3>
+              <h3 className="text-slate-900 dark:text-slate-100 font-bold text-lg leading-tight">Team: {team.name}</h3>
             </div>
 
             {/* Sparkline + PnL */}
             <div className="flex items-end justify-between gap-3">
               <div>
-                <p className={`mono-nums text-2xl font-bold ${team.pnl >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+                <p className={`mono-nums text-2xl font-bold ${team.pnl >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
                   {formatPnl(team.pnl)}
                 </p>
-                <p className="text-slate-600 text-xs mt-0.5">Final PnL</p>
+                <p className="text-slate-400 dark:text-slate-600 text-xs mt-0.5">Final PnL</p>
               </div>
             </div>
 
             {/* Secondary metrics */}
-            <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-800">
+            <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
               <div>
                 <p className="text-slate-500 text-xs mb-0.5">Sharpe</p>
-                <p className="mono-nums text-slate-200 font-semibold">{team.sharpe.toFixed(2)}</p>
+                <p className="mono-nums text-slate-800 dark:text-slate-200 font-semibold">{team.sharpe.toFixed(2)}</p>
               </div>
               <div>
                 <p className="text-slate-500 text-xs mb-0.5">Max DD</p>
-                <p className="mono-nums text-rose-400 font-semibold">{(team.maxDrawdown * 100).toFixed(1)}%</p>
+                <p className="mono-nums text-rose-600 dark:text-rose-400 font-semibold">{(team.maxDrawdown * 100).toFixed(1)}%</p>
               </div>
             </div>
           </div>

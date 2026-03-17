@@ -14,9 +14,9 @@ const glowStyles: Record<string, string> = {
 };
 
 const valueColorStyles: Record<string, string> = {
-  emerald: "text-emerald-400",
-  rose:    "text-rose-400",
-  default: "text-slate-100",
+  emerald: "text-emerald-600 dark:text-emerald-400",
+  rose:    "text-rose-600 dark:text-rose-400",
+  default: "text-slate-900 dark:text-slate-100",
 };
 
 export default function MetricCard({
@@ -33,7 +33,7 @@ export default function MetricCard({
   return (
     <div className={`glass-card rounded-xl p-5 flex flex-col gap-3 ${glowClass} ${className}`}>
       <div className="flex items-center justify-between">
-        <span className="text-slate-400 text-sm font-medium">{label}</span>
+        <span className="text-slate-600 dark:text-slate-400 text-sm font-medium">{label}</span>
       </div>
 
       <div className="flex items-end justify-between gap-2">

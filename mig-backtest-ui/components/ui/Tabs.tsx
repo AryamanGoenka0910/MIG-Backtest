@@ -22,7 +22,7 @@ export default function Tabs({ tabs, defaultTab, children, className = "" }: Tab
 
   return (
     <div className={className}>
-      <div className="flex items-center gap-1 border-b border-slate-800">
+      <div className="flex items-center gap-1 border-b border-slate-200 dark:border-slate-800">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -32,16 +32,16 @@ export default function Tabs({ tabs, defaultTab, children, className = "" }: Tab
             className={`relative flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors duration-150 border-b-2 -mb-px cursor-pointer
               ${tab.disabled ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}
               ${activeTab === tab.id
-                ? "text-emerald-400 border-emerald-500"
-                : "text-slate-400 border-transparent hover:text-slate-200"
+                ? "text-emerald-600 dark:text-emerald-400 border-emerald-500"
+                : "text-slate-500 border-transparent hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
               }`}
           >
             {tab.label}
             {tab.count !== undefined && (
               <span className={`text-xs px-1.5 py-0.5 rounded-full ${
                 activeTab === tab.id
-                  ? "bg-emerald-500/15 text-emerald-400"
-                  : "bg-slate-800 text-slate-500"
+                  ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
+                  : "bg-slate-200 dark:bg-slate-800 text-slate-500"
               }`}>
                 {tab.count}
               </span>

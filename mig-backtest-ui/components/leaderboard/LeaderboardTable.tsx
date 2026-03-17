@@ -13,7 +13,7 @@ interface LeaderboardTableProps {
 
 function SortIcon({ active, dir }: { active: boolean; dir: SortDir }) {
   return (
-    <span className={`ml-1 inline-flex flex-col text-[8px] leading-none ${active ? "text-emerald-400" : "text-slate-700"}`}>
+    <span className={`ml-1 inline-flex flex-col text-[8px] leading-none ${active ? "text-emerald-600 dark:text-emerald-400" : "text-slate-400 dark:text-slate-700"}`}>
       <span className={dir === "asc" && active ? "text-emerald-400" : ""}>▲</span>
       <span className={dir === "desc" && active ? "text-emerald-400" : ""}>▼</span>
     </span>
@@ -80,16 +80,16 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
             placeholder="Search team..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:border-emerald-500/50 transition-colors"
+            className="w-full pl-9 pr-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 text-sm focus:outline-none focus:border-emerald-500/50 transition-colors"
           />
         </div>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl border border-slate-800">
+      <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
         <table className="w-full text-sm border-collapse">
           <thead>
-            <tr className="border-b border-slate-800 bg-slate-900/60">
+            <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-100/60 dark:bg-slate-900/60">
               <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider w-12">
                 <button onClick={() => handleSort("rank")} className="flex items-center cursor-pointer hover:text-slate-300 transition-colors">
                   Rank <SortIcon active={sortKey === "rank"} dir={sortDir} />
@@ -108,7 +108,7 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
           <tbody>
             {sorted.length === 0 ? (
               <tr>
-                <td colSpan={8} className="text-center py-12 text-slate-600">
+                <td colSpan={8} className="text-center py-12 text-slate-400 dark:text-slate-600">
                   No teams match your search
                 </td>
               </tr>
@@ -116,9 +116,9 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
               sorted.map((team, i) => (
                 <tr
                   key={team.id}
-                  className={`border-b border-slate-800/50 transition-colors ${
-                    i % 2 === 0 ? "bg-slate-900/20" : "bg-transparent"
-                  } hover:bg-slate-800/30`}
+                  className={`border-b border-slate-200/50 dark:border-slate-800/50 transition-colors ${
+                    i % 2 === 0 ? "bg-slate-50 dark:bg-slate-900/20" : "bg-transparent"
+                  } hover:bg-slate-100/50 dark:hover:bg-slate-800/30`}
                 >
                   {/* Rank */}
                   <td className="px-4 py-3.5">
@@ -131,27 +131,27 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
 
                   {/* Team */}
                   <td className="px-4 py-3.5">
-                    <div className="font-semibold text-slate-200">{team.name}</div>
-                    <div className="text-slate-600 text-xs lg:hidden">{team.school}</div>
+                    <div className="font-semibold text-slate-800 dark:text-slate-200">{team.name}</div>
+                    <div className="text-slate-400 dark:text-slate-600 text-xs lg:hidden">{team.school}</div>
                   </td>
 
                   {/* PnL */}
                   <td className="px-4 py-3.5 text-right">
-                    <span className={`mono-nums font-semibold ${team.pnl >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
+                    <span className={`mono-nums font-semibold ${team.pnl >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
                       {formatPnl(team.pnl)}
                     </span>
                   </td>
 
                   {/* Sharpe */}
                   <td className="px-4 py-3.5 text-right">
-                    <span className={`mono-nums ${team.sharpe >= 1.5 ? "text-emerald-400" : team.sharpe >= 0 ? "text-slate-300" : "text-rose-400"}`}>
+                    <span className={`mono-nums ${team.sharpe >= 1.5 ? "text-emerald-600 dark:text-emerald-400" : team.sharpe >= 0 ? "text-slate-700 dark:text-slate-300" : "text-rose-600 dark:text-rose-400"}`}>
                       {team.sharpe.toFixed(2)}
                     </span>
                   </td>
 
                   {/* Max DD */}
                   <td className="px-4 py-3.5 text-right">
-                    <span className="mono-nums text-rose-400">
+                    <span className="mono-nums text-rose-600 dark:text-rose-400">
                       {(team.maxDrawdown * 100).toFixed(1)}%
                     </span>
                   </td>
@@ -162,7 +162,7 @@ export default function LeaderboardTable({ teams }: LeaderboardTableProps) {
         </table>
       </div>
 
-      <p className="text-slate-600 text-xs mt-3 text-right mono-nums">
+      <p className="text-slate-400 dark:text-slate-600 text-xs mt-3 text-right mono-nums">
         Showing {sorted.length} of {teams.length} teams · Updated 2 hours ago
       </p>
     </div>

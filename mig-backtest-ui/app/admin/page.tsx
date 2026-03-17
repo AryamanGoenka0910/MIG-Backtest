@@ -59,16 +59,16 @@ export default function AdminPage() {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="mb-8">
-          <div className="h-3 w-12 bg-slate-800 rounded animate-pulse mb-3" />
-          <div className="h-9 w-56 bg-slate-800 rounded-lg animate-pulse" />
+          <div className="h-3 w-12 bg-slate-200 dark:bg-slate-800 rounded animate-pulse mb-3" />
+          <div className="h-9 w-56 bg-slate-200 dark:bg-slate-800 rounded-lg animate-pulse" />
         </div>
         <div className="glass-card rounded-2xl overflow-hidden">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-14 px-6 flex items-center gap-4 border-b border-slate-800/60">
-              <div className="h-3 w-8 bg-slate-800 rounded animate-pulse" />
-              <div className="h-3 w-48 bg-slate-800 rounded animate-pulse" />
-              <div className="h-3 w-20 bg-slate-800 rounded animate-pulse" />
-              <div className="h-5 w-24 bg-slate-800 rounded-full animate-pulse ml-auto" />
+            <div key={i} className="h-14 px-6 flex items-center gap-4 border-b border-slate-200 dark:border-slate-800/60">
+              <div className="h-3 w-8 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
+              <div className="h-3 w-48 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
+              <div className="h-3 w-20 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
+              <div className="h-5 w-24 bg-slate-200 dark:bg-slate-800 rounded-full animate-pulse ml-auto" />
             </div>
           ))}
         </div>
@@ -119,11 +119,11 @@ export default function AdminPage() {
           <p className="text-rose-400 text-xs font-mono uppercase tracking-widest mb-2">
             Admin
           </p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-100">All Submissions</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100">All Submissions</h1>
         </div>
         <button
           onClick={load}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:text-slate-100 hover:border-slate-600 text-sm transition-colors self-start sm:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 hover:border-slate-400 dark:hover:border-slate-600 text-sm transition-colors self-start sm:self-auto"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -140,14 +140,14 @@ export default function AdminPage() {
             .map(([status, count]) => (
               <span
                 key={status}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs bg-slate-800 border border-slate-700 text-slate-400 font-mono"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-mono"
               >
-                <span className="text-slate-200 font-semibold">{count}</span>
+                <span className="text-slate-700 dark:text-slate-200 font-semibold">{count}</span>
                 {status.replace("_", " ")}
               </span>
             ))}
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs bg-slate-800 border border-slate-700 text-slate-400 font-mono">
-            <span className="text-slate-200 font-semibold">{submissions.length}</span>
+            <span className="text-slate-700 dark:text-slate-200 font-semibold">{submissions.length}</span>
             total
           </span>
         </div>
@@ -156,12 +156,12 @@ export default function AdminPage() {
       {/* Table */}
       <div className="glass-card rounded-2xl overflow-hidden">
         {loading ? (
-          <div className="flex flex-col gap-0 divide-y divide-slate-800/60">
+          <div className="flex flex-col gap-0 divide-y divide-slate-200 dark:divide-slate-800/60">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="h-14 px-6 flex items-center gap-4">
-                <div className="h-3 w-8 bg-slate-800 rounded animate-pulse" />
-                <div className="h-3 w-48 bg-slate-800 rounded animate-pulse" />
-                <div className="h-3 w-24 bg-slate-800 rounded animate-pulse ml-auto" />
+                <div className="h-3 w-8 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
+                <div className="h-3 w-48 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
+                <div className="h-3 w-24 bg-slate-200 dark:bg-slate-800 rounded animate-pulse ml-auto" />
               </div>
             ))}
           </div>
@@ -173,7 +173,7 @@ export default function AdminPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-800 text-xs text-slate-500 uppercase tracking-wider font-medium">
+                <tr className="border-b border-slate-200 dark:border-slate-800 text-xs text-slate-500 uppercase tracking-wider font-medium">
                   <th className="text-left px-6 py-3">ID</th>
                   <th className="text-left px-4 py-3">File</th>
                   <th className="text-left px-4 py-3">Team</th>
@@ -184,25 +184,25 @@ export default function AdminPage() {
                   <th className="px-6 py-3" />
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody className="divide-y divide-slate-200/60 dark:divide-slate-800/60">
                 {sorted.map((sub) => (
                   <tr
                     key={sub.id}
-                    className="hover:bg-slate-800/30 transition-colors group"
+                    className="hover:bg-slate-100/50 dark:hover:bg-slate-800/30 transition-colors group"
                   >
-                    <td className="px-6 py-3.5 font-mono text-slate-500 text-xs">
+                    <td className="px-6 py-3.5 font-mono text-slate-400 dark:text-slate-500 text-xs">
                       #{sub.id}
                     </td>
                     <td className="px-4 py-3.5 max-w-[200px]">
                       <Link
                         href={`/submissions/${sub.id}`}
-                        className="text-slate-300 hover:text-emerald-400 font-mono text-xs truncate block transition-colors"
+                        className="text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-mono text-xs truncate block transition-colors"
                         title={sub.filename}
                       >
                         {sub.filename}
                       </Link>
                     </td>
-                    <td className="px-4 py-3.5 font-mono text-xs text-slate-400 max-w-[120px] truncate">
+                    <td className="px-4 py-3.5 font-mono text-xs text-slate-500 dark:text-slate-400 max-w-[120px] truncate">
                       {sub.team_id}
                     </td>
                     <td className="px-4 py-3.5">
@@ -219,21 +219,21 @@ export default function AdminPage() {
                     </td>
                     <td className="px-4 py-3.5 text-right mono-nums text-xs">
                       {sub.score != null ? (
-                        <span className={sub.score.sharpe >= 1 ? "text-emerald-400" : sub.score.sharpe >= 0 ? "text-slate-300" : "text-rose-400"}>
+                        <span className={sub.score.sharpe >= 1 ? "text-emerald-600 dark:text-emerald-400" : sub.score.sharpe >= 0 ? "text-slate-600 dark:text-slate-300" : "text-rose-600 dark:text-rose-400"}>
                           {sub.score.sharpe.toFixed(3)}
                         </span>
                       ) : (
                         <span className="text-slate-600">—</span>
                       )}
                     </td>
-                    <td className="px-4 py-3.5 text-slate-500 text-xs whitespace-nowrap">
+                    <td className="px-4 py-3.5 text-slate-400 dark:text-slate-500 text-xs whitespace-nowrap">
                       {formatDate(sub.created_at)}
                     </td>
                     <td className="px-6 py-3.5 text-right">
                       <button
                         onClick={() => handleRequeue(sub.id)}
                         disabled={requeueing.has(sub.id) || sub.status === "queued" || sub.status === "running"}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 border border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-500 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                       >
                         {requeueing.has(sub.id) ? (
                           <svg className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">

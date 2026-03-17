@@ -33,36 +33,36 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-8">
-          <span className="font-mono font-bold text-3xl text-emerald-400 tracking-tight">MIG</span>
+          <span className="font-mono font-bold text-3xl text-emerald-500 dark:text-emerald-400 tracking-tight">MIG</span>
           <p className="text-slate-500 text-sm mt-1">Quant Competition 2026</p>
         </div>
 
         <div className="glass-card rounded-2xl p-8">
-          <h1 className="text-slate-100 font-semibold text-xl mb-1">Sign in</h1>
+          <h1 className="text-slate-900 dark:text-slate-100 font-semibold text-xl mb-1">Sign in</h1>
           <p className="text-slate-500 text-sm mb-6">Use your migconf.com account credentials.</p>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
-              <label className="block text-xs text-slate-400 font-medium mb-1.5">Email</label>
+              <label className="block text-xs text-slate-600 dark:text-slate-400 font-medium mb-1.5">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@umich.edu"
                 required
-                className="w-full px-3 py-2.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:border-emerald-500/50 transition-colors"
+                className="w-full px-3 py-2.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 text-sm focus:outline-none focus:border-emerald-500/50 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-xs text-slate-400 font-medium mb-1.5">Password</label>
+              <label className="block text-xs text-slate-600 dark:text-slate-400 font-medium mb-1.5">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full px-3 py-2.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:border-emerald-500/50 transition-colors"
+                className="w-full px-3 py-2.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 text-sm focus:outline-none focus:border-emerald-500/50 transition-colors"
               />
             </div>
 
@@ -75,7 +75,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-lg bg-emerald-500 text-slate-950 text-sm font-semibold hover:bg-emerald-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2.5 rounded-lg bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>

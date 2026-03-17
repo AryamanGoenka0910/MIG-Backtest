@@ -77,24 +77,24 @@ export default async function LeaderboardPage() {
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
-            <p className="text-emerald-400 text-xs font-mono uppercase tracking-widest mb-2">
+            <p className="text-emerald-600 dark:text-emerald-400 text-xs font-mono uppercase tracking-widest mb-2">
               Rankings
             </p>
-            <h1 className="text-3xl sm:text-4xl font-bold text-slate-100">Leaderboard</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100">Leaderboard</h1>
           </div>
           {teams.length > 0 && (
             <p className="text-slate-500 text-sm">
-              <span className="text-slate-300 font-medium mono-nums">{teams.length}</span> teams scored
+              <span className="text-slate-700 dark:text-slate-300 font-medium mono-nums">{teams.length}</span> teams scored
             </p>
           )}
         </div>
       </div>
       {teams.length === 0 ? (
         <div className="text-center py-24">
-          <div className="w-16 h-16 mx-auto rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center text-2xl mb-4">
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-2xl mb-4">
             📊
           </div>
-          <h3 className="text-slate-300 font-semibold text-lg mb-2">No results yet</h3>
+          <h3 className="text-slate-700 dark:text-slate-300 font-semibold text-lg mb-2">No results yet</h3>
           <p className="text-slate-500">Leaderboard will populate once submissions are scored.</p>
         </div>
       ) : (

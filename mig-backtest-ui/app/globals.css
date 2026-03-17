@@ -1,7 +1,21 @@
 @import "tailwindcss";
 
-/* ─── Base dark-mode variables ─────────────────────────────────────── */
+/* ─── Dark mode variant (class-based via next-themes) ───────────────── */
+@custom-variant dark (&:is(.dark *));
+
+/* ─── Light mode base variables (default) ──────────────────────────── */
 :root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #1e293b;
+  --border: rgba(203, 213, 225, 0.8);
+  --muted: #e2e8f0;
+  --muted-foreground: #475569;
+}
+
+/* ─── Dark mode variable overrides ─────────────────────────────────── */
+.dark {
   --background: #020617;
   --foreground: #f1f5f9;
   --card: #0f172a;
@@ -31,9 +45,6 @@
   --color-accent-silver:  #94a3b8;
   --color-accent-bronze:  #b45309;
 
-  --color-glass:        rgba(15, 23, 42, 0.8);
-  --color-glass-border: rgba(51, 65, 85, 0.4);
-
   --shadow-glow-emerald: 0 0 24px rgba(16, 185, 129, 0.12);
   --shadow-glow-sky:     0 0 24px rgba(56, 189, 248, 0.12);
   --shadow-glow-rose:    0 0 24px rgba(244, 63, 94, 0.12);
@@ -57,21 +68,36 @@ body {
 /* ─── Reusable utilities ────────────────────────────────────────────── */
 @layer utilities {
   .glass-card {
-    background-color: rgba(15, 23, 42, 0.8);
-    border: 1px solid rgba(51, 65, 85, 0.4);
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(203, 213, 225, 0.6);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
 
-  .glass-card-hover {
+  .dark .glass-card {
     background-color: rgba(15, 23, 42, 0.8);
     border: 1px solid rgba(51, 65, 85, 0.4);
+  }
+
+  .glass-card-hover {
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(203, 213, 225, 0.6);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     transition: border-color 0.2s, background-color 0.2s;
   }
 
+  .dark .glass-card-hover {
+    background-color: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(51, 65, 85, 0.4);
+  }
+
   .glass-card-hover:hover {
+    background-color: rgba(241, 245, 249, 0.9);
+    border-color: rgba(148, 163, 184, 0.5);
+  }
+
+  .dark .glass-card-hover:hover {
     background-color: rgba(30, 41, 59, 0.6);
     border-color: rgba(71, 85, 105, 0.5);
   }
@@ -85,9 +111,15 @@ body {
 
   .bg-grid-pattern {
     background-image:
+      linear-gradient(rgba(100, 116, 139, 0.15) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(100, 116, 139, 0.15) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .dark .bg-grid-pattern {
+    background-image:
       linear-gradient(rgba(30, 41, 59, 0.3) 1px, transparent 1px),
       linear-gradient(90deg, rgba(30, 41, 59, 0.3) 1px, transparent 1px);
-    background-size: 48px 48px;
   }
 
   .mono-nums {
@@ -103,15 +135,27 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #cbd5e1;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
 

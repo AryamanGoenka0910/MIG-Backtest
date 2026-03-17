@@ -15,7 +15,6 @@ export async function GET() {
     }
     user = data.user;
   } catch (e) {
-    console.error("[/api/team] auth.getUser threw:", e);
     return NextResponse.json({ error: "Auth error" }, { status: 401 });
   }
 
@@ -57,8 +56,6 @@ export async function GET() {
   }
 
   const members: TeamMember[] = (memberRows ?? []) as TeamMember[];
-
-  console.log("Team members:", members); 
 
   return NextResponse.json(
     { team: { team_id: teamId, members } },

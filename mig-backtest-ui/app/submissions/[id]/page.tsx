@@ -66,30 +66,30 @@ export default async function SubmissionDetailPage({
         : "—",
       color: sub.score
         ? sub.score.pnl >= 0
-          ? "text-emerald-400"
-          : "text-rose-400"
-        : "text-slate-600",
+          ? "text-emerald-600 dark:text-emerald-400"
+          : "text-rose-600 dark:text-rose-400"
+        : "text-slate-400 dark:text-slate-600",
     },
     {
       label: "Sharpe Ratio",
       value: sub.score ? sub.score.sharpe.toFixed(3) : "—",
       color: sub.score
         ? sub.score.sharpe >= 1
-          ? "text-emerald-400"
+          ? "text-emerald-600 dark:text-emerald-400"
           : sub.score.sharpe >= 0
-          ? "text-slate-300"
-          : "text-rose-400"
-        : "text-slate-600",
+          ? "text-slate-600 dark:text-slate-300"
+          : "text-rose-600 dark:text-rose-400"
+        : "text-slate-400 dark:text-slate-600",
     },
     {
       label: "Max Drawdown",
       value: sub.score ? `${(sub.score.max_drawdown * 100).toFixed(2)}%` : "—",
-      color: sub.score ? "text-amber-400" : "text-slate-600",
+      color: sub.score ? "text-amber-600 dark:text-amber-400" : "text-slate-400 dark:text-slate-600",
     },
     {
       label: "Runtime",
       value: sub.runtime_seconds != null ? `${sub.runtime_seconds.toFixed(2)}s` : "—",
-      color: "text-slate-300",
+      color: "text-slate-600 dark:text-slate-300",
     },
   ];
 
@@ -98,7 +98,7 @@ export default async function SubmissionDetailPage({
       {/* Back */}
       <Link
         href="/submit"
-        className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-300 text-sm transition-colors mb-8"
+        className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm transition-colors mb-8"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -109,15 +109,15 @@ export default async function SubmissionDetailPage({
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-8">
         <div>
-          <p className="text-emerald-400 text-xs font-mono uppercase tracking-widest mb-2">
+          <p className="text-emerald-600 dark:text-emerald-400 text-xs font-mono uppercase tracking-widest mb-2">
             Submission #{sub.id}
           </p>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 font-mono break-all">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 font-mono break-all">
             {sub.filename}
           </h1>
           <p className="text-slate-500 text-sm mt-1">
             Submitted {formatDate(sub.created_at)} · Team{" "}
-            <span className="text-slate-400 font-mono">{sub.team_id}</span>
+            <span className="text-slate-500 dark:text-slate-400 font-mono">{sub.team_id}</span>
           </p>
         </div>
         <div className="shrink-0 mt-1">
@@ -137,7 +137,7 @@ export default async function SubmissionDetailPage({
 
       {/* Log */}
       <div className="glass-card rounded-2xl p-6">
-        <h2 className="text-slate-200 font-semibold mb-4 flex items-center gap-2">
+        <h2 className="text-slate-800 dark:text-slate-200 font-semibold mb-4 flex items-center gap-2">
           <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
@@ -145,7 +145,7 @@ export default async function SubmissionDetailPage({
         </h2>
 
         {isFailed(sub.status) && sub.validation_error ? (
-          <pre className="bg-slate-950 rounded-xl border border-rose-500/20 p-4 text-xs font-mono text-rose-300 leading-relaxed overflow-x-auto whitespace-pre-wrap break-words">
+          <pre className="bg-slate-100 dark:bg-slate-950 rounded-xl border border-rose-500/20 p-4 text-xs font-mono text-rose-600 dark:text-rose-300 leading-relaxed overflow-x-auto whitespace-pre-wrap break-words">
             {sub.validation_error}
           </pre>
         ) : sub.status === "passed" ? (
@@ -156,7 +156,7 @@ export default async function SubmissionDetailPage({
             Strategy ran successfully with no errors.
           </div>
         ) : (
-          <div className="flex items-center gap-2.5 text-slate-500 text-sm bg-slate-900/40 border border-slate-800 rounded-xl px-4 py-3">
+          <div className="flex items-center gap-2.5 text-slate-500 text-sm bg-slate-100/60 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3">
             <svg className="w-4 h-4 shrink-0 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>

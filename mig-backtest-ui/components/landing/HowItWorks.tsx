@@ -48,8 +48,8 @@ export default function HowItWorks() {
     <section className="py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <p className="text-emerald-400 text-sm font-mono font-medium tracking-widest uppercase mb-3">Process</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-100">How It Works</h2>
+          <p className="text-emerald-600 dark:text-emerald-400 text-sm font-mono font-medium tracking-widest uppercase mb-3">Process</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100">How It Works</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -62,8 +62,8 @@ export default function HowItWorks() {
                 <span className={`font-mono text-3xl font-bold opacity-20 ${step.accentColor}`}>{step.number}</span>
               </div>
               <div>
-                <h3 className="text-slate-100 font-semibold text-base mb-2">{step.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{step.description}</p>
+                <h3 className="text-slate-900 dark:text-slate-100 font-semibold text-base mb-2">{step.title}</h3>
+                <p className="text-slate-600 dark:text-slate-500 text-sm leading-relaxed">{step.description}</p>
               </div>
             </div>
           ))}

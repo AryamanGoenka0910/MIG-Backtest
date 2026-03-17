@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import MarketUpdateBanner from "@/components/MarketUpdateBanner";
 import { Analytics } from "@vercel/analytics/next"
+import { Providers } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,17 +29,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-950 text-slate-100 min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col`}
       >
-        {/* <MarketUpdateBanner
-          message="Submission deadline: March 20, 2026 at 11:59 PM EST — 8 days remaining"
-          dismissKey="banner-march-2026-deadline"
-        /> */}
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <Providers>
+          {/* <MarketUpdateBanner
+            message="Submission deadline: March 20, 2026 at 11:59 PM EST — 8 days remaining"
+            dismissKey="banner-march-2026-deadline"
+          /> */}
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </Providers>
         <Analytics/>
       </body>
     </html>

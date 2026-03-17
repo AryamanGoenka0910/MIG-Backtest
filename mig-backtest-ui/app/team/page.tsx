@@ -81,16 +81,16 @@ export default function TeamPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <p className="text-emerald-400 text-xs font-mono uppercase tracking-widest mb-1">Team Dashboard</p>
+          <p className="text-emerald-600 dark:text-emerald-400 text-xs font-mono uppercase tracking-widest mb-1">Team Dashboard</p>
           {teamLoading ? (
-            <div className="h-9 w-40 bg-slate-800 rounded-lg animate-pulse" />
+            <div className="h-9 w-40 bg-slate-200 dark:bg-slate-800 rounded-lg animate-pulse" />
           ) : (
-            <h1 className="text-3xl sm:text-4xl font-bold text-slate-100">{userName}</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100">{userName}</h1>
           )}
         </div>
         <Link
           href="/submit"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400 transition-colors shadow-[0_0_16px_rgba(16,185,129,0.2)] self-start sm:self-auto shrink-0"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 text-white font-semibold text-sm hover:bg-emerald-400 transition-colors shadow-[0_0_16px_rgba(16,185,129,0.2)] self-start sm:self-auto shrink-0"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -121,20 +121,20 @@ export default function TeamPage() {
           glowColor="sky"
         />
         <div className="glass-card rounded-xl p-5 flex flex-col gap-3">
-          <span className="text-slate-400 text-sm font-medium">Today&apos;s Submissions</span>
+          <span className="text-slate-600 dark:text-slate-400 text-sm font-medium">Today&apos;s Submissions</span>
           {submissionsLoading ? (
-            <div className="h-8 w-16 bg-slate-800 rounded animate-pulse" />
+            <div className="h-8 w-16 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
           ) : (
-            <span className="mono-nums text-2xl font-semibold text-slate-100 leading-none">
+            <span className="mono-nums text-2xl font-semibold text-slate-900 dark:text-slate-100 leading-none">
               {dailyCount.count}
-              <span className="text-slate-600 text-base font-normal"> / {dailyCount.limit}</span>
+              <span className="text-slate-400 dark:text-slate-600 text-base font-normal"> / {dailyCount.limit}</span>
             </span>
           )}
           <div className="flex gap-1.5">
             {Array.from({ length: dailyCount.limit }).map((_, i) => (
               <div
                 key={i}
-                className={`flex-1 h-1.5 rounded-full ${submissionsLoading ? "bg-slate-800 animate-pulse" : i < dailyCount.count ? "bg-emerald-500" : "bg-slate-800"}`}
+                className={`flex-1 h-1.5 rounded-full ${submissionsLoading ? "bg-slate-200 dark:bg-slate-800 animate-pulse" : i < dailyCount.count ? "bg-emerald-500" : "bg-slate-200 dark:bg-slate-800"}`}
               />
             ))}
           </div>
@@ -144,11 +144,11 @@ export default function TeamPage() {
       {/* Submission History + Sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <h2 className="text-slate-200 font-semibold text-lg mb-4">Team Submission History</h2>
+          <h2 className="text-slate-800 dark:text-slate-200 font-semibold text-lg mb-4">Team Submission History</h2>
           {submissionsLoading ? (
             <div className="flex flex-col gap-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="glass-card rounded-xl h-14 animate-pulse bg-slate-800/50" />
+                <div key={i} className="glass-card rounded-xl h-14 animate-pulse bg-slate-200/80 dark:bg-slate-800/50" />
               ))}
             </div>
           ) : (
@@ -158,8 +158,8 @@ export default function TeamPage() {
 
         <div className="flex flex-col gap-4">
           <div className="glass-card rounded-2xl p-5 border-l-4 border-sky-500/50">
-            <h3 className="text-slate-200 font-semibold mb-3 text-sm">Competition Reminders</h3>
-            <ul className="flex flex-col gap-2 text-xs text-slate-500">
+            <h3 className="text-slate-800 dark:text-slate-200 font-semibold mb-3 text-sm">Competition Reminders</h3>
+            <ul className="flex flex-col gap-2 text-xs text-slate-500 dark:text-slate-500">
               {[
                 "Deadline: March 20 at 11:59 AM EST",
                 `${submissionsLeft} submission${submissionsLeft === 1 ? "" : "s"} remaining today`,
@@ -177,16 +177,16 @@ export default function TeamPage() {
           {/* Team Members */}
           {teamLoading ? (
             <div className="glass-card rounded-2xl p-6">
-              <div className="h-3 w-24 bg-slate-800 rounded animate-pulse mb-4" />
+              <div className="h-3 w-24 bg-slate-200 dark:bg-slate-800 rounded animate-pulse mb-4" />
               <div className="flex flex-wrap gap-3">
                 {[1, 2].map((i) => (
-                  <div key={i} className="h-12 w-32 bg-slate-800/60 rounded-xl animate-pulse" />
+                  <div key={i} className="h-12 w-32 bg-slate-200/60 dark:bg-slate-800/60 rounded-xl animate-pulse" />
                 ))}
               </div>
             </div>
           ) : members.length > 0 && (
             <div className="glass-card rounded-2xl p-6">
-              <h2 className="text-slate-400 text-xs font-mono uppercase tracking-widest mb-4">Team Members</h2>
+              <h2 className="text-slate-500 dark:text-slate-400 text-xs font-mono uppercase tracking-widest mb-4">Team Members</h2>
               <div className="flex flex-wrap gap-3">
                 {members.map((m) => {
                   const initial = (m.user_name ?? m.user_id).charAt(0).toUpperCase();
@@ -194,13 +194,13 @@ export default function TeamPage() {
                   return (
                     <div
                       key={m.user_id}
-                      className="flex items-center gap-3 bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-3"
+                      className="flex items-center gap-3 bg-slate-100/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3"
                     >
                       <div className="w-8 h-8 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-semibold text-sm shrink-0">
                         {initial}
                       </div>
                       <div>
-                        <p className="text-slate-200 text-sm font-medium leading-none">
+                        <p className="text-slate-800 dark:text-slate-200 text-sm font-medium leading-none">
                           {m.user_name ?? "Unnamed"}
                           {isCurrentUser && (
                             <span className="ml-2 text-xs text-emerald-400 font-mono">(You)</span>
