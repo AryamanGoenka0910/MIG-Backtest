@@ -45,6 +45,7 @@ const SIDEBAR_ITEMS = [
   { id: "backtester", label: "Backtester Mechanics" },
   { id: "scoring", label: "Scoring" },
   { id: "constraints", label: "Constraints" },
+  { id: "rules", label: "Rules & Integrity" },
   { id: "sample", label: "Sample Repo" },
 ];
 
@@ -326,7 +327,7 @@ export default function DocsPage() {
             <div className="glass-card rounded-2xl p-6 md:p-8">
               <h2 className="text-slate-100 font-bold text-xl mb-2">Data Format</h2>
               <p className="text-slate-400 text-sm mb-5 leading-relaxed">
-                The training dataset (<code className="text-sky-400 font-mono text-sm">train_data_50.csv</code>) contains OHLCV data for
+                The training dataset (<code className="text-sky-400 font-mono text-sm">dev_data.csv</code>) contains OHLCV data for
                 50 stocks. Your strategy only receives the Open price column as its input.
               </p>
 
@@ -335,7 +336,7 @@ export default function DocsPage() {
                   { col: "Ticker", type: "str", example: "ZJ", desc: "Stock symbol. Rows in the prices matrix are sorted alphabetically by ticker." },
                   { col: "Date", type: "date", example: "2015-07-06", desc: "Trading date in YYYY-MM-DD format. Columns in the prices matrix run chronologically." },
                   { col: "Open", type: "float", example: "5.6995", desc: "Daily open price. This is the only column passed to get_actions." },
-                  { col: "High / Low", type: "float", example: "5.7583 / 5.6954", desc: "Intraday high and low. Available in train_data_50.csv for research; not passed to your strategy." },
+                  { col: "High / Low", type: "float", example: "5.7583 / 5.6954", desc: "Intraday high and low. Available in dev_data.csv for research; not passed to your strategy." },
                   { col: "Close", type: "float", example: "5.7478", desc: "Daily closing price. Available for research; not passed to your strategy." },
                   { col: "Volume", type: "int", example: "112,241,600", desc: "Total shares traded that day. Available for research; not passed to your strategy." },
                 ].map(({ col, type, example, desc }) => (
@@ -568,6 +569,8 @@ export default function DocsPage() {
                   { constraint: "Fractional Shares", value: "Not supported", note: "Actions are rounded to nearest integer" },
                   { constraint: "Network Access", value: "Disabled", note: "No outbound connections from sandbox" },
                   { constraint: "File I/O", value: "Disabled", note: "Read/write access is blocked in sandbox" },
+                  { constraint: "Transaction Fee", value: "0.1% per trade", note: "Applied to the notional value of every buy or sell" },
+                  { constraint: "Position Limit", value: "100 shares", note: "Maximum absolute position per stock at any time" },
                 ].map(({ constraint, value, note }, i) => (
                   <div key={i} className="bg-slate-900/50 rounded-xl p-4 border border-slate-800">
                     <p className="text-slate-500 text-xs mb-1">{constraint}</p>
@@ -575,6 +578,55 @@ export default function DocsPage() {
                     <p className="text-slate-600 text-xs mt-1">{note}</p>
                   </div>
                 ))}
+              </div>
+            </div>
+          </Section>
+
+          {/* Rules & Integrity */}
+          <Section id="rules">
+            <div className="glass-card rounded-2xl p-6 md:p-8">
+              <h2 className="text-slate-100 font-bold text-xl mb-2">Rules &amp; Integrity</h2>
+              <p className="text-slate-400 text-sm mb-6 leading-relaxed">
+                All strategies are evaluated on anonymised price data. The following conduct rules apply to every participant.
+                Violations are taken seriously and consequences apply to the entire team and conference standing.
+              </p>
+
+              <div className="flex flex-col gap-4 mb-6">
+                <div className="rounded-xl border-l-4 border-rose-500 bg-rose-500/5 p-5">
+                  <p className="text-rose-400 text-xs font-mono uppercase tracking-widest mb-2">Prohibited — Future Price Trading</p>
+                  <p className="text-slate-400 text-sm leading-relaxed mb-3">
+                    Your <code className="font-mono text-slate-300">get_actions</code> function receives the <em>full</em> price matrix at
+                    once, meaning future prices are technically present in the array. You must <strong className="text-slate-200">not</strong> use
+                    any price at index <code className="font-mono text-slate-300">t</code> when deciding the action for a day earlier than{" "}
+                    <code className="font-mono text-slate-300">t</code>. Strategies that look ahead in time — directly or via derived
+                    features — constitute <span className="text-rose-300 font-semibold">future price trading</span> and are disqualified.
+                  </p>
+                  <p className="text-slate-500 text-xs leading-relaxed">
+                    Examples of violations: using <code className="font-mono text-slate-400">prices[i, t+1]</code> in day-t decisions,
+                    sorting or ranking stocks by future returns, or training a model on out-of-sample future labels.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border-l-4 border-rose-500 bg-rose-500/5 p-5">
+                  <p className="text-rose-400 text-xs font-mono uppercase tracking-widest mb-2">Prohibited — Identifying the Underlying Securities</p>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    The price data is anonymised — tickers are replaced with synthetic labels and the time axis is obscured. Attempting to
+                    reverse-engineer or identify the real underlying securities (e.g. by cross-referencing price patterns against public market
+                    data) and incorporating that knowledge into your strategy is strictly prohibited. Strategies must operate solely on the
+                    provided data as-is.
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-xl bg-rose-500/10 border border-rose-500/30 p-5">
+                <p className="text-rose-300 text-sm font-semibold mb-2">Consequences of Violation</p>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  Any team found in violation of the above rules will be{" "}
+                  <span className="text-rose-300 font-semibold">immediately disqualified from the competition</span>. This disqualification
+                  applies to the <span className="text-slate-200 font-medium">entire team</span> and extends to the{" "}
+                  <span className="text-slate-200 font-medium">entire conference</span> — all members lose eligibility for prizes and
+                  recognition across all MIG competition events.
+                </p>
               </div>
             </div>
           </Section>
@@ -602,7 +654,7 @@ export default function DocsPage() {
                     tagColor: "text-slate-400 bg-slate-500/10 border-slate-500/20",
                   },
                   {
-                    file: "train_data_50.csv",
+                    file: "dev_data.csv",
                     desc: "Full OHLCV dataset for all 50 stocks. Use this for local research and strategy testing.",
                     tag: ".csv",
                     tagColor: "text-amber-400 bg-amber-500/10 border-amber-500/20",
