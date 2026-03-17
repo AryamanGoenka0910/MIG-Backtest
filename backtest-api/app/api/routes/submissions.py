@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Annotated, List
 
@@ -9,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
 from app.config import settings
+from app.models.submission import SubmissionStatus
 from app.schemas.submission import SubmissionResponse, SubmissionUploadResponse
 from app.services.submission_service import count_today_submissions, create_submission, get_submission, list_submissions
 from app.utils.validation import validate_strategy_file, validate_submission_zip
@@ -104,6 +106,12 @@ def list_all_submissions(
     return submissions
 
 
+@router.get("/admin/all", response_model=List[SubmissionResponse])
+def admin_list_all_submissions(db: Session = Depends(get_db)):
+    submissions = list_submissions(db, team_id=None)
+    return submissions
+
+
 @router.get("/get-submission/{submission_id}", response_model=SubmissionResponse)
 def get_submission_by_id(
     submission_id: int,
@@ -113,4 +121,19 @@ def get_submission_by_id(
     submission = get_submission(db, submission_id)
     if not submission:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Submission not found.")
+    return submission
+
+
+@router.post("/{submission_id}/requeue", response_model=SubmissionResponse)
+def requeue_submission(
+    submission_id: int,
+    db: Session = Depends(get_db),
+):
+    submission = get_submission(db, submission_id)
+    if not submission:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Submission not found.")
+    submission.status = SubmissionStatus.queued
+    submission.updated_at = datetime.now(timezone.utc)
+    db.commit()
+    db.refresh(submission)
     return submission

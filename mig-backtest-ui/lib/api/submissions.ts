@@ -21,3 +21,17 @@ export async function getDailyCount(teamId: string): Promise<DailyCountResponse>
   const data = await res.json();
   return data;
 }
+
+/** Admin: fetch all submissions across all teams. */
+export async function adminGetAllSubmissions(): Promise<Submission[]> {
+  const res = await fetch(`${BASE}/submissions/admin/all`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to fetch all submissions: ${res.status}`);
+  return res.json();
+}
+
+/** Admin: requeue a submission by id. */
+export async function requeueSubmission(submissionId: number): Promise<Submission> {
+  const res = await fetch(`${BASE}/submissions/${submissionId}/requeue`, { method: "POST" });
+  if (!res.ok) throw new Error(`Failed to requeue submission ${submissionId}: ${res.status}`);
+  return res.json();
+}

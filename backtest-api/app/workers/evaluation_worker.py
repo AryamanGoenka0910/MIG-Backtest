@@ -101,6 +101,8 @@ def _process_submission(db: Session, submission: Submission) -> None:
     # --- Step 2: Parse results ---
     try:
         metrics = json.loads(result.stdout)
+        # Delete any existing score before inserting (handles requeued submissions)
+        db.query(Score).filter(Score.submission_id == submission.id).delete()
         score = Score(
             submission_id=submission.id,
             pnl=float(metrics["pnl"]),
@@ -119,6 +121,7 @@ def _process_submission(db: Session, submission: Submission) -> None:
             score.max_drawdown,
         )
     except Exception as exc:
+        db.rollback()
         submission.status = SubmissionStatus.failed_runtime
         submission.validation_error = f"Could not parse evaluation output: {exc}"
         submission.updated_at = _now()
