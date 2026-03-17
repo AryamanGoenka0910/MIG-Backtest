@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import List, Optional
 
@@ -48,7 +48,8 @@ def create_submission(
 
 
 def count_today_submissions(db: Session, team_id: str) -> int:
-    today = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+    est = timezone(timedelta(hours=-5))
+    today = datetime.now(est).replace(hour=0, minute=0, second=0, microsecond=0)
     q = db.query(Submission)
     if team_id is not None:
         q = q.filter(Submission.team_id == team_id)
