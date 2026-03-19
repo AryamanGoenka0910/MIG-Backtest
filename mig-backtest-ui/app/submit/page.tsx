@@ -35,20 +35,16 @@ export default function SubmitPage() {
       const resolvedTeamId = (profile?.team_id as string | undefined) ?? user.id;
       setTeamId(resolvedTeamId);
 
-      if (profile?.team_id) {
-        const { data: teamRow } = await supabase
-          .from("Teams")
-          .select("team_name")
-          .eq("team_id", profile.team_id)
-          .maybeSingle();
-        setTeamName((teamRow as { team_name?: string } | null)?.team_name ?? null);
-      }
-
-      const [submissionsRes, dailyRes] = await Promise.allSettled([
+      const [teamRes, submissionsRes, dailyRes] = await Promise.allSettled([
+        fetch("/api/team"),
         getTeamSubmissions(resolvedTeamId).catch(() => []),
         getDailyCount(resolvedTeamId).catch(() => ({ count: 0, limit: 5, team_id: resolvedTeamId })),
       ]);
 
+      if (teamRes.status === "fulfilled" && teamRes.value.ok) {
+        const json = await teamRes.value.json();
+        setTeamName(json.team?.team_name ?? null);
+      }
       if (submissionsRes.status === "fulfilled") setSubmissions(submissionsRes.value);
       if (dailyRes.status === "fulfilled") setDailyCount(dailyRes.value);
       setSubmissionsLoading(false);

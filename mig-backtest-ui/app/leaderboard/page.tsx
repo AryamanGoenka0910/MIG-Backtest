@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 import LeaderboardView from "@/components/leaderboard/LeaderboardView";
 import type { Team } from "@/types";
 
@@ -43,7 +44,7 @@ export default async function LeaderboardPage() {
   const teamIds = entries.map((e) => e.team_id);
   let teamNameMap: Record<string, string> = {};
   if (teamIds.length > 0) {
-    const { data: teams } = await supabase
+    const { data: teams } = await supabaseAdmin
       .from("Teams")
       .select("team_id, team_name")
       .in("team_id", teamIds);

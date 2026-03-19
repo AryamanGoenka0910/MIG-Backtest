@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 import StatusBadge from "@/components/ui/StatusBadge";
 import type { SubmissionStatus } from "@/types";
 
@@ -61,7 +62,7 @@ export default async function SubmissionDetailPage({
   // Look up team name from Supabase Teams table
   let teamName: string | null = null;
   if (sub.team_id) {
-    const { data: teamRow } = await supabase
+    const { data: teamRow } = await supabaseAdmin
       .from("Teams")
       .select("team_name")
       .eq("team_id", sub.team_id)

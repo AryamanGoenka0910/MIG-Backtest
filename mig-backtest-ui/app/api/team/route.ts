@@ -42,23 +42,31 @@ export async function GET() {
     );
   }
 
-  const { data: memberRows, error: membersError } = await supabaseAdmin
-    .from("Users")
-    .select("user_id, user_name")
-    .eq("team_id", teamId)
-    .order("user_name", { ascending: true });
+  const [membersResult, teamResult] = await Promise.all([
+    supabaseAdmin
+      .from("Users")
+      .select("user_id, user_name")
+      .eq("team_id", teamId)
+      .order("user_name", { ascending: true }),
+    supabaseAdmin
+      .from("Teams")
+      .select("team_name")
+      .eq("team_id", teamId)
+      .maybeSingle(),
+  ]);
 
-  if (membersError) {
+  if (membersResult.error) {
     return NextResponse.json(
-      { error: `Failed to load team members: ${membersError.message}` },
+      { error: `Failed to load team members: ${membersResult.error.message}` },
       { status: 500 }
     );
   }
 
-  const members: TeamMember[] = (memberRows ?? []) as TeamMember[];
+  const members: TeamMember[] = (membersResult.data ?? []) as TeamMember[];
+  const teamName = (teamResult.data as { team_name?: string } | null)?.team_name ?? null;
 
   return NextResponse.json(
-    { team: { team_id: teamId, members } },
+    { team: { team_id: teamId, team_name: teamName, members } },
     { status: 200, headers: { "Cache-Control": "no-store" } }
   );
 }

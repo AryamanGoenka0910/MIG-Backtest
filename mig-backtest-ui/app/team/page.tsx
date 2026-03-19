@@ -43,15 +43,6 @@ export default function TeamPage() {
       const resolvedTeamId = (profile?.team_id as string | undefined) ?? user.id;
       setUserName((profile?.user_name as string | undefined) ?? "Unknown");
 
-      if (profile?.team_id) {
-        const { data: teamRow } = await supabase
-          .from("Teams")
-          .select("team_name")
-          .eq("team_id", profile.team_id)
-          .maybeSingle();
-        setTeamName((teamRow as { team_name?: string } | null)?.team_name ?? null);
-      }
-
       const [teamRes, submissionsRes, dailyRes] = await Promise.allSettled([
         fetch("/api/team"),
         getTeamSubmissions(resolvedTeamId).catch(() => []),
@@ -61,6 +52,7 @@ export default function TeamPage() {
       if (teamRes.status === "fulfilled" && teamRes.value.ok) {
         const json = await teamRes.value.json();
         setMembers(json.team?.members ?? []);
+        setTeamName(json.team?.team_name ?? null);
       }
       setTeamLoading(false);
 
@@ -95,9 +87,15 @@ export default function TeamPage() {
           {teamLoading ? (
             <div className="h-9 w-40 bg-slate-200 dark:bg-slate-800 rounded-lg animate-pulse" />
           ) : (
-            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100">
-              {teamName ?? userName}
-            </h1>
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100">
+                {userName}
+              </h1>
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mt-2">
+                Team: {teamName}
+              </h2>
+            </div>
+            
           )}
         </div>
         <Link

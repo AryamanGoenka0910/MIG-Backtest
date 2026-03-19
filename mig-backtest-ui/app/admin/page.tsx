@@ -32,22 +32,17 @@ export default function AdminPage() {
       setSubmissions(data);
       setError(null);
 
-      // Look up team names from Supabase
+      // Look up team names via admin API route (bypasses RLS)
       const uniqueTeamIds = [...new Set(data.map((s) => s.team_id))];
       if (uniqueTeamIds.length > 0) {
-        const supabase = createClient();
-        const { data: teams } = await supabase
-          .from("Teams")
-          .select("team_id, team_name")
-          .in("team_id", uniqueTeamIds);
-        if (teams) {
-          setTeamNameMap(
-            Object.fromEntries(
-              (teams as { team_id: string | number; team_name: string }[]).map(
-                (t) => [String(t.team_id), t.team_name]
-              )
-            )
-          );
+        const res = await fetch("/api/team-names", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ teamIds: uniqueTeamIds }),
+        });
+        if (res.ok) {
+          const json = await res.json();
+          setTeamNameMap(json.teamNames ?? {});
         }
       }
     } catch (e) {
