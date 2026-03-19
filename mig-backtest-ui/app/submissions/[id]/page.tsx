@@ -51,12 +51,18 @@ export default async function SubmissionDetailPage({
   if (!user) redirect("/login");
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/submissions/${id}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/submissions/get-submission/${id}`,
     { cache: "no-store" }
   );
   if (!res.ok) notFound();
 
   const sub: BackendSubmission = await res.json();
+
+  const logsRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/submissions/${id}/logs`,
+    { cache: "no-store" }
+  );
+  const logs: string | null = logsRes.ok ? (await logsRes.json()).logs : null;
 
   const statCards = [
     {
@@ -147,6 +153,10 @@ export default async function SubmissionDetailPage({
         {isFailed(sub.status) && sub.validation_error ? (
           <pre className="bg-slate-100 dark:bg-slate-950 rounded-xl border border-rose-500/20 p-4 text-xs font-mono text-rose-600 dark:text-rose-300 leading-relaxed overflow-x-auto whitespace-pre-wrap break-words">
             {sub.validation_error}
+          </pre>
+        ) : sub.status === "passed" && logs ? (
+          <pre className="bg-slate-100 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 p-4 text-xs font-mono text-slate-700 dark:text-slate-300 leading-relaxed overflow-x-auto whitespace-pre-wrap wrap-break-word">
+            {logs}
           </pre>
         ) : sub.status === "passed" ? (
           <div className="flex items-center gap-2.5 text-emerald-400 text-sm bg-emerald-500/5 border border-emerald-500/20 rounded-xl px-4 py-3">

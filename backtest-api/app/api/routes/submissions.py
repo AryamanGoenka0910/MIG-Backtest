@@ -124,6 +124,20 @@ def get_submission_by_id(
     return submission
 
 
+@router.get("/{submission_id}/logs")
+def get_submission_logs(
+    submission_id: int,
+    db: Session = Depends(get_db),
+):
+    submission = get_submission(db, submission_id)
+    if not submission:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Submission not found.")
+    log_path = settings.LOGS_DIR / f"{submission_id}.log"
+    if not log_path.exists():
+        return {"logs": None}
+    return {"logs": log_path.read_text()}
+
+
 @router.post("/{submission_id}/requeue", response_model=SubmissionResponse)
 def requeue_submission(
     submission_id: int,
