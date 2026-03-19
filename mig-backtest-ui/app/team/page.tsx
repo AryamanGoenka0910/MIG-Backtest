@@ -17,6 +17,7 @@ export default function TeamPage() {
   const router = useRouter();
 
   const [userName, setUserName] = useState<string>("—");
+  const [teamName, setTeamName] = useState<string | null>(null);
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [dailyCount, setDailyCount] = useState({ count: 0, limit: 5 });
@@ -41,6 +42,15 @@ export default function TeamPage() {
 
       const resolvedTeamId = (profile?.team_id as string | undefined) ?? user.id;
       setUserName((profile?.user_name as string | undefined) ?? "Unknown");
+
+      if (profile?.team_id) {
+        const { data: teamRow } = await supabase
+          .from("Teams")
+          .select("team_name")
+          .eq("team_id", profile.team_id)
+          .maybeSingle();
+        setTeamName((teamRow as { team_name?: string } | null)?.team_name ?? null);
+      }
 
       const [teamRes, submissionsRes, dailyRes] = await Promise.allSettled([
         fetch("/api/team"),
@@ -85,7 +95,9 @@ export default function TeamPage() {
           {teamLoading ? (
             <div className="h-9 w-40 bg-slate-200 dark:bg-slate-800 rounded-lg animate-pulse" />
           ) : (
-            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100">{userName}</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100">
+              {teamName ?? userName}
+            </h1>
           )}
         </div>
         <Link

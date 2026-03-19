@@ -13,10 +13,9 @@ type LeaderboardEntry = {
   last_submitted: string;
 };
 
-type UserProfile = {
-  team_id: string;
-  name: string | null;
-  school: string | null;
+type TeamProfile = {
+  team_id: string | number;
+  team_name: string | null;
 };
 
 export default async function LeaderboardPage() {
@@ -40,26 +39,27 @@ export default async function LeaderboardPage() {
     // backend unreachable — show empty leaderboard
   }
 
-  // Fetch team metadata (name + school) from Supabase public.users
+  // Fetch team names from Supabase Teams table
   const teamIds = entries.map((e) => e.team_id);
-  let profileMap: Record<string, UserProfile> = {};
+  let teamNameMap: Record<string, string> = {};
   if (teamIds.length > 0) {
-    const { data: profiles } = await supabase
-      .from("users")
-      .select("team_id, name, school")
+    const { data: teams } = await supabase
+      .from("Teams")
+      .select("team_id, team_name")
       .in("team_id", teamIds);
-    if (profiles) {
-      profileMap = Object.fromEntries((profiles as UserProfile[]).map((p) => [p.team_id, p]));
+    if (teams) {
+      teamNameMap = Object.fromEntries(
+        (teams as TeamProfile[]).map((t) => [String(t.team_id), t.team_name ?? ""])
+      );
     }
   }
 
   // Map to Team interface
   const teams: Team[] = entries.map((entry) => {
-    const profile = profileMap[entry.team_id];
     return {
       id: entry.team_id,
-      name: profile?.name ?? entry.team_id,
-      school: profile?.school ?? "—",
+      name: teamNameMap[entry.team_id] || entry.team_id,
+      school: "—",
       rank: entry.rank,
       pnl: entry.best_pnl,
       sharpe: entry.best_sharpe,

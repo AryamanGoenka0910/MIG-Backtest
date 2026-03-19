@@ -58,6 +58,17 @@ export default async function SubmissionDetailPage({
 
   const sub: BackendSubmission = await res.json();
 
+  // Look up team name from Supabase Teams table
+  let teamName: string | null = null;
+  if (sub.team_id) {
+    const { data: teamRow } = await supabase
+      .from("Teams")
+      .select("team_name")
+      .eq("team_id", sub.team_id)
+      .maybeSingle();
+    teamName = (teamRow as { team_name?: string } | null)?.team_name ?? null;
+  }
+
   const logsRes = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/submissions/${id}/logs`,
     { cache: "no-store" }
@@ -123,7 +134,7 @@ export default async function SubmissionDetailPage({
           </h1>
           <p className="text-slate-500 text-sm mt-1">
             Submitted {formatDate(sub.created_at)} · Team{" "}
-            <span className="text-slate-500 dark:text-slate-400 font-mono">{sub.team_id}</span>
+            <span className="text-slate-500 dark:text-slate-400">{teamName ?? sub.team_id}</span>
           </p>
         </div>
         <div className="shrink-0 mt-1">

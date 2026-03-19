@@ -13,6 +13,7 @@ export default function SubmitPage() {
 
   const [userId, setUserId] = useState<string>("");
   const [teamId, setTeamId] = useState<string>("");
+  const [teamName, setTeamName] = useState<string | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [dailyCount, setDailyCount] = useState({ count: 0, limit: 5 });
   const [submissionsLoading, setSubmissionsLoading] = useState(true);
@@ -34,6 +35,15 @@ export default function SubmitPage() {
       const resolvedTeamId = (profile?.team_id as string | undefined) ?? user.id;
       setTeamId(resolvedTeamId);
 
+      if (profile?.team_id) {
+        const { data: teamRow } = await supabase
+          .from("Teams")
+          .select("team_name")
+          .eq("team_id", profile.team_id)
+          .maybeSingle();
+        setTeamName((teamRow as { team_name?: string } | null)?.team_name ?? null);
+      }
+
       const [submissionsRes, dailyRes] = await Promise.allSettled([
         getTeamSubmissions(resolvedTeamId).catch(() => []),
         getDailyCount(resolvedTeamId).catch(() => ({ count: 0, limit: 5, team_id: resolvedTeamId })),
@@ -53,6 +63,9 @@ export default function SubmitPage() {
       <div className="mb-8">
         <p className="text-emerald-600 dark:text-emerald-400 text-xs font-mono uppercase tracking-widest mb-2">Upload</p>
         <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100">Submit Strategy</h1>
+        {teamName && (
+          <p className="text-slate-500 text-sm font-mono mt-1">Team: <span className="text-slate-700 dark:text-slate-300">{teamName}</span></p>
+        )}
         <div className="flex items-center gap-3 mt-2">
           <p className="text-slate-500">Upload your Python strategy file for evaluation.</p>
           <span className="text-xs px-2.5 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20 font-mono shrink-0">

@@ -21,6 +21,7 @@ export default function AdminPage() {
   const router = useRouter();
   const [authChecked, setAuthChecked] = useState(false);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [teamNameMap, setTeamNameMap] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [requeueing, setRequeueing] = useState<Set<number>>(new Set());
@@ -30,6 +31,25 @@ export default function AdminPage() {
       const data = await adminGetAllSubmissions();
       setSubmissions(data);
       setError(null);
+
+      // Look up team names from Supabase
+      const uniqueTeamIds = [...new Set(data.map((s) => s.team_id))];
+      if (uniqueTeamIds.length > 0) {
+        const supabase = createClient();
+        const { data: teams } = await supabase
+          .from("Teams")
+          .select("team_id, team_name")
+          .in("team_id", uniqueTeamIds);
+        if (teams) {
+          setTeamNameMap(
+            Object.fromEntries(
+              (teams as { team_id: string | number; team_name: string }[]).map(
+                (t) => [String(t.team_id), t.team_name]
+              )
+            )
+          );
+        }
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to load submissions");
     } finally {
@@ -202,8 +222,8 @@ export default function AdminPage() {
                         {sub.filename}
                       </Link>
                     </td>
-                    <td className="px-4 py-3.5 font-mono text-xs text-slate-500 dark:text-slate-400 max-w-[120px] truncate">
-                      {sub.team_id}
+                    <td className="px-4 py-3.5 text-xs text-slate-500 dark:text-slate-400 max-w-[120px] truncate">
+                      {teamNameMap[sub.team_id] ?? sub.team_id}
                     </td>
                     <td className="px-4 py-3.5">
                       <StatusBadge status={sub.status} />
