@@ -28,6 +28,12 @@ async def upload_submission(
     file: Annotated[UploadFile, File()],
     db: Session = Depends(get_db),
 ):
+    if settings.SUBMISSIONS_CLOSED:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Submissions are closed.",
+        )
+
     filename = file.filename or ""
     is_zip = filename.lower().endswith(".zip")
     is_py = filename.lower().endswith(".py")
@@ -86,6 +92,11 @@ async def upload_submission(
         is_zip=is_zip,
     )
     return submission
+
+
+@router.get("/status")
+def submission_status():
+    return {"open": not settings.SUBMISSIONS_CLOSED}
 
 
 @router.get("/daily-count/{team_id}")

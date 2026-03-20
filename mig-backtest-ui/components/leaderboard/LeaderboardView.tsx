@@ -18,8 +18,10 @@ export default function LeaderboardView({ teams }: LeaderboardViewProps) {
         <PodiumCards teams={teams} />
       </div>
 
+      <LeaderboardTable teams={teams} />
+
       {/* Tabs */}
-      <Tabs
+      {/* <Tabs
         tabs={[
           { id: "public", label: "Public Leaderboard", count: teams.length },
           {
@@ -48,7 +50,7 @@ export default function LeaderboardView({ teams }: LeaderboardViewProps) {
             </div>
           )
         }
-      </Tabs>
+      </Tabs> */}
     </>
   );
 }

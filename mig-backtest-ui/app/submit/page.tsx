@@ -17,6 +17,7 @@ export default function SubmitPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [dailyCount, setDailyCount] = useState({ count: 0, limit: 5 });
   const [submissionsLoading, setSubmissionsLoading] = useState(true);
+  const [submissionsClosed, setSubmissionsClosed] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -35,10 +36,11 @@ export default function SubmitPage() {
       const resolvedTeamId = (profile?.team_id as string | undefined) ?? user.id;
       setTeamId(resolvedTeamId);
 
-      const [teamRes, submissionsRes, dailyRes] = await Promise.allSettled([
+      const [teamRes, submissionsRes, dailyRes, statusRes] = await Promise.allSettled([
         fetch("/api/team"),
         getTeamSubmissions(resolvedTeamId).catch(() => []),
         getDailyCount(resolvedTeamId).catch(() => ({ count: 0, limit: 5, team_id: resolvedTeamId })),
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/submissions/status`).catch(() => null),
       ]);
 
       if (teamRes.status === "fulfilled" && teamRes.value.ok) {
@@ -47,6 +49,10 @@ export default function SubmitPage() {
       }
       if (submissionsRes.status === "fulfilled") setSubmissions(submissionsRes.value);
       if (dailyRes.status === "fulfilled") setDailyCount(dailyRes.value);
+      if (statusRes.status === "fulfilled" && statusRes.value?.ok) {
+        const json = await statusRes.value.json();
+        setSubmissionsClosed(!json.open);
+      }
       setSubmissionsLoading(false);
     };
 
@@ -64,9 +70,15 @@ export default function SubmitPage() {
         )}
         <div className="flex items-center gap-3 mt-2">
           <p className="text-slate-500">Upload your Python strategy file for evaluation.</p>
-          <span className="text-xs px-2.5 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20 font-mono shrink-0">
-            Deadline: Mar 20 · 11:59 AM EST
-          </span>
+          {submissionsClosed ? (
+            <span className="text-xs px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 font-mono shrink-0 font-semibold">
+              Submissions Closed
+            </span>
+          ) : (
+            <span className="text-xs px-2.5 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20 font-mono shrink-0">
+              Deadline: Mar 20 · 11:59 AM EST
+            </span>
+          )}
         </div>
       </div>
 
@@ -148,7 +160,13 @@ export default function SubmitPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div className="lg:col-span-2 glass-card rounded-2xl p-6">
           <h2 className="text-slate-800 dark:text-slate-200 font-semibold text-lg mb-5">Upload Strategy File</h2>
-          {userId && teamId ? (
+          {submissionsClosed ? (
+            <div className="h-40 rounded-xl border-2 border-dashed border-rose-500/30 bg-rose-500/5 flex flex-col items-center justify-center gap-2 text-center">
+              <span className="text-2xl">🔒</span>
+              <p className="text-rose-400 font-semibold">Submissions are closed</p>
+              <p className="text-slate-500 text-sm">The competition deadline has passed.</p>
+            </div>
+          ) : userId && teamId ? (
             <UploadDropzone userId={userId} teamId={teamId} maxSizeMB={1} />
           ) : (
             <div className="h-40 rounded-xl bg-slate-200/80 dark:bg-slate-800/50 animate-pulse" />
